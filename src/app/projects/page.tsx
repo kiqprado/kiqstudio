@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import projects from '@/portfolio/page'
+import { projects } from '@/portfolio/page'
 
 import { ArrowBigRight } from 'lucide-react'
 

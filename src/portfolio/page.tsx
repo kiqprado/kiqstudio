@@ -6,6 +6,13 @@ export interface Iprojects {
   images: string[]
 }
 
+export interface IContacts {
+  id: number
+  slug: string
+  title: string
+  url: string[]
+}
+
 const projects: Iprojects[] = [
   {
     id: 0,
@@ -42,4 +49,30 @@ const projects: Iprojects[] = [
   }
 ]
 
-export default projects
+const contacts: IContacts[] = [
+  {
+    id: 0,
+    slug: 'funny',
+    title: 'Coffee ?',
+    url: []
+  },
+  {
+    id: 1,
+    slug: 'professional',
+    title: 'Contracts ?',
+    url: [
+      
+    ]
+  },
+  {
+    id: 2,
+    slug: 'workflow',
+    title: 'Collabs ?',
+    url: []
+  }
+]
+
+export {
+  contacts,
+  projects
+}
