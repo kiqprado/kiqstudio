@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/font": "^14.2.15",
+    "next/font": "^14.2.15",
     "gsap": "^3.12.7",
     "lenis": "^1.2.3",
     "lucide-react": "^0.483.0",

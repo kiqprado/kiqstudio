@@ -220,7 +220,6 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
         
       </div>
     </div>
-    </ReactLenis>
-    
+    </ReactLenis> 
   )
 }
