@@ -159,11 +159,11 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
 
           <div className='relative flex-1 text-center border rounded-md border-zinc-600/75 bg-zinc-800/25'>
             <p className='font-medium text-lg'>{project.title}</p>
-          <div
-            ref={progressBarRef}
-            className='absolute top-0 left-0 w-full h-full bg-zinc-700/25 scale-x-0 origin-center-left -z-10'
-          ></div>
-        </div>
+            <div
+              ref={progressBarRef}
+              className='absolute top-0 left-0 w-full h-full bg-zinc-700/25 scale-x-0 origin-center-left -z-10'
+            />
+          </div>
 
           <Link 
             href={`/projects/${nextProject.slug}`}
@@ -208,7 +208,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
         <div
           id="next-project-progress-bar-footer" 
           ref={nextProjectProgressBarRef}
-          className='absolute top-124 w-full h-1 bg-zinc-800/50 border border-zinc-500 rounded-xl px-0.5'
+          className='absolute top-124 w-full h-1 bg-zinc-700/50 border border-zinc-500 rounded-xl px-0.5'
         />
 
         <span 

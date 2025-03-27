@@ -1,4 +1,4 @@
-import projects from '@/portfolio/page'
+import { projects } from '@/portfolio/page'
 
 import ProjectClient from './project-client'
 
