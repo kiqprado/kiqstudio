@@ -4,9 +4,9 @@ import { contacts } from "@/portfolio/page";
 
 export default function Contacts() {
   return (
-    <div>
-      <ul>
-        <span>Pick One</span>
+    <div className='h-screen flex'>
+      <ul className='m-auto'>
+        <span className=''>Pick One</span>
         {contacts.map((contact) => (
           <li
             key={contact.id}
