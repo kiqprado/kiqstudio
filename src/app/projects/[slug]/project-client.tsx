@@ -7,6 +7,7 @@ import { useEffect, useRef, useState} from 'react'
 
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { TextPlugin } from 'gsap/TextPlugin'
 import { ReactLenis } from 'lenis/react'
 
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
@@ -22,7 +23,7 @@ interface IProjectClient {
 export default function ProjectClient({ prevProject, project, nextProject}: IProjectClient) {
   const projectNavRef = useRef(null)
   const progressBarRef = useRef(null)
-  const projectDescriptionRef = useRef(null)
+  const descriptionTextRef = useRef(null)
   const footerRef = useRef(null)
   const nextProjectProgressBarRef = useRef(null)
 
@@ -32,7 +33,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
   
 
   useEffect(()=> {
-    gsap.registerPlugin(ScrollTrigger)
+    gsap.registerPlugin(ScrollTrigger, TextPlugin)
 
     gsap.set(projectNavRef.current, {
       opacity: 0,
@@ -47,14 +48,18 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
       ease: "power3.out"
     })
 
-    gsap.to(projectDescriptionRef.current, {
-      opacity: 1,
-      duration: 1,
-      delay: 0.5,
-      ease: "power3.inOut"
-    })
+    if(descriptionTextRef.current) {
+      gsap.fromTo( descriptionTextRef.current, {
+        text: ' '
+      },{
+        text: { value: project.description},
+        duration: 11,
+        delay: 0.5,
+        ease: 'none'
+      })
+    }
 
-    const navScrollTrigger = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: document.body,
       start: "top top",
       end: "bottom bottom",
@@ -67,7 +72,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
       }
     })
 
-    const footerScrollTrigger = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: footerRef.current,
       start: "top top",
       end: `+=${window.innerHeight * 3}px`,
@@ -130,7 +135,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
 
-  }, [nextProject.slug, isTransitioning, shouldUpdateBarProgress])
+  }, [nextProject.slug, isTransitioning, shouldUpdateBarProgress, project?.description])
 
   if(!project) {
     return (
@@ -177,7 +182,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
       <div className='relative h-screen flex flex-col justify-center items-center'>
         <h1 className='tracking-widest font-bold text-6xl'>{project.title}</h1>
         <p 
-          ref={projectDescriptionRef}
+          ref={descriptionTextRef}
           className='text-center tracking-wider w-4xl absolute top-124'
         >
           {project.description}
