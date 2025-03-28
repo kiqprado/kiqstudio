@@ -10,6 +10,9 @@ export interface IContacts {
   id: number
   slug: string
   title: string
+  subtitle: string
+  description: string
+  role: string[]
   url: string[]
 }
 
@@ -54,21 +57,46 @@ const contacts: IContacts[] = [
     id: 0,
     slug: 'funny',
     title: 'Coffee ?',
-    url: []
+    subtitle: 'I’m Fun’ Way',
+    description: 'Hey there! What’s up? First off, awesome to have you here! Let’s chat about your idea—but real quick, have you checked out my projects yet? Click here to take a peek. It’s super quick and worth it! I’ll catch you back here in a sec.',
+    role: [
+      'Discord',
+      'Instagram'
+    ],
+    url: [
+      '404',
+      'https://www.instagram.com/kiqprado/'
+    ]
   },
   {
     id: 1,
     slug: 'professional',
     title: 'Contracts ?',
+    subtitle: 'Professional Way',
+    description: 'Hello! Now that you’ve likely browsed through my projects section, let’s talk about your needs. If you haven’t had a chance to explore my work yet, click here to learn more. Below, you’ll find links to my professional channels.',
+    role: [
+      'Email',
+      'LinkedIn'
+    ],
     url: [
-      
+      'Send me a message',
+      'https://www.linkedin.com/in/kaiqueprado/'
     ]
   },
   {
     id: 2,
     slug: 'workflow',
     title: 'Collabs ?',
-    url: []
+    subtitle: 'Ancient Ritual',
+    description: 'Hey! Let’s kick things off by talking about what brings you here. Below, you’ll find quick links to reach out—so we can start this collab on the right foot. I’m just one click away!',
+    role: [
+      'Email',
+      'Discord'
+    ],
+    url: [
+      'Send me a message',
+      '404'
+    ]
   }
 ]
 
