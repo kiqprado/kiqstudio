@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import Image from "next/image"
 
 import { useEffect, useRef, useState} from 'react'
@@ -10,9 +9,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { TextPlugin } from 'gsap/TextPlugin'
 import { ReactLenis } from 'lenis/react'
 
-import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
-
 import { Iprojects } from '@/portfolio/page'
+
+import { ButtonLink } from '@/elements/button-link'
+import { NavBarSectionTitle } from '@/elements/nav-bar-section-title'
+
+import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 
 interface IProjectClient {
   prevProject: Iprojects
@@ -154,29 +156,25 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
           ref={projectNavRef}
           className='fixed top-0 left-1/2 -translate-x-1/2 w-1/2 flex items-center justify-between z-2 gap-6 py-6'
         >
-          <Link 
+          <ButtonLink 
             href={`/projects/${prevProject.slug}`}
-            className='w-36 flex items-center justify-center gap-1.5 border rounded-md border-zinc-500/75 bg-zinc-600/35 hover:border-zinc-400/55 hover:bg-zinc-500/35  text-zinc-300  hover:text-zinc-200 px-6 py-0.5'
           >
             <ArrowBigLeft className='size-5'/>
             Previous
-          </Link>
+          </ButtonLink>
 
-          <div className='relative flex-1 text-center border rounded-md border-zinc-600/75 bg-zinc-800/25'>
-            <p className='font-medium text-lg'>{project.title}</p>
-            <div
-              ref={progressBarRef}
-              className='absolute top-0 left-0 w-full h-full bg-zinc-700/25 scale-x-0 origin-center-left -z-10'
-            />
-          </div>
+          <NavBarSectionTitle
+            ref={progressBarRef}
+          >
+            {project.title}
+          </NavBarSectionTitle>
 
-          <Link 
+          <ButtonLink 
             href={`/projects/${nextProject.slug}`}
-            className='w-36 flex items-center justify-center gap-1.5 border rounded-md border-zinc-500/75 bg-zinc-600/35  hover:border-zinc-400/55 hover:bg-zinc-500/35 text-zinc-300  hover:text-zinc-200 px-6 py-0.5'
           >
             <ArrowBigRight className='size-5'/>
             Next
-          </Link>
+          </ButtonLink>
       </div>
 
       <div className='relative h-screen flex flex-col justify-center items-center'>
