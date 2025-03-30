@@ -34,110 +34,222 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
 
   
 
-  useEffect(()=> {
-    gsap.registerPlugin(ScrollTrigger, TextPlugin)
-
-    gsap.set(projectNavRef.current, {
-      opacity: 0,
-      y: -100
-    })
-
-    gsap.to(projectNavRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      delay: 0.25,
-      ease: "power3.out"
-    })
-
-    if(descriptionTextRef.current) {
-      gsap.fromTo( descriptionTextRef.current, {
-        text: ' '
-      },{
-        text: { value: project.description},
-        duration: 11,
-        delay: 0.5,
-        ease: 'none'
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger, TextPlugin);
+  
+    // ANIMAÇÕES INICIAIS
+    function setupInitialAnimations() {
+      gsap.set(projectNavRef.current, {
+        opacity: 0,
+        y: -100
       })
-    }
+  
+      gsap.to(projectNavRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.25,
+        ease: 'power3.out'
+      })
 
-    ScrollTrigger.create({
-      trigger: document.body,
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: (self) => {
-        if(progressBarRef.current) {
-          gsap.set(progressBarRef.current, {
-            scaleX: self.progress
-          })
-        }
+      if (descriptionTextRef.current) {
+        gsap.fromTo(descriptionTextRef.current, {
+          text: ' '
+        }, {
+          text: { value: project.description },
+          duration: 11,
+          delay: 0.7,
+          ease: 'none'
+        });
       }
-    })
-
-    ScrollTrigger.create({
-      trigger: footerRef.current,
-      start: "top top",
-      end: `+=${window.innerHeight * 3}px`,
-      pin: true,
-      pinSpacing: true,
-      onEnter: () => {
-        if(projectNavRef.current && !isTransitioning) {
-          gsap.to(projectNavRef.current, {
-            y: -100,
-            duration: 0.5,
-            ease: "power2.inOut"
-          })
-        }
-      },
-      onLeave: () => {
-        if(projectNavRef.current && !isTransitioning) {
-          gsap.to(projectNavRef.current, {
-            y: 0,
-            duration: 0.5,
-            ease: "power2.inOut"
-          })
-        }
-      },
-      onUpdate: (self) => {
-        if(nextProjectProgressBarRef && shouldUpdateBarProgress) {
-          gsap.set(nextProjectProgressBarRef.current, {
-            scaleX: self.progress,
-
-          })
-        }
-
-        if(self.progress >= 1 && !isTransitioning) {
-          setShouldUpdateBarProgress(false)
-          setIsTransitioning(true)
-
-          const theTimeLine = gsap.timeline()
-
-          theTimeLine.set(nextProjectProgressBarRef.current, {
-            scaleX: 1
-          })
-
-          theTimeLine.to(
-            [footerRef.current?.querySelector("#next-project-title-footer"),
-             footerRef.current?.querySelector("next-project-progress-bar-footer")],
-            {
-            opacity: 0,
-            duration: 0.3,
-            ease: "power2.inOut"
-            }
-          )
-
-          theTimeLine.call(() => {
-            window.location.href = `/projects/${nextProject.slug}`
-          })
-        }
-      }
-    })
-
-    return ()=> {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
-
-  }, [nextProject.slug, isTransitioning, shouldUpdateBarProgress, project?.description])
+  
+    // ANIMAÇÕES DA GALERIA
+    function setupGalleryAnimations() {
+      const imageContainers = gsap.utils.toArray('.image-container') as HTMLElement[];
+      
+      imageContainers.forEach((container, index) => {
+        const image = container.querySelector('img');
+  
+        gsap.set(container, {
+          opacity: 0,
+          y: 50,
+          rotation: index % 2 === 0 ? -5 : 5,
+          scale: 0.9
+        });
+        
+        gsap.set(image, { 
+          scale: 1.1,
+          filter: 'brightness(1.2) contrast(0.8)'
+        });
+  
+        // Timeline principal
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          }
+        });
+  
+        tl.to(container, {
+          opacity: 1,
+          y: 0,
+          rotation: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: 'back.out(1.2)',
+          delay: index * 0.1
+        })
+        .to(image, {
+          scale: 1,
+          duration: 1.2,
+          ease: 'power2.out'
+        }, '-=0.5')
+        .to(image, {
+          filter: 'brightness(1) contrast(1)',
+          duration: 0.8,
+          ease: 'power2.out'
+        }, '-=0.8');
+  
+        // Efeito parallax
+        gsap.to(image, {
+          y: index % 2 === 0 ? -50 : 30,
+          scrollTrigger: {
+            trigger: container,
+            start: 'top bottom',
+            end: "bottom top",
+            scrub: 1
+          }
+        });
+  
+        setupImageHoverEffects(container, image);
+      });
+    }
+  
+    // INTERAÇÕES DE HOVER
+    function setupImageHoverEffects(container: HTMLElement, image: HTMLImageElement | null) {
+      if (!image) return;
+  
+      container.addEventListener('mouseenter', () => {
+        gsap.to(image, {
+          scale: 1.03,
+          duration: 0.3
+        });
+      });
+      
+      container.addEventListener('mouseleave', () => {
+        gsap.to(image, {
+          scale: 1,
+          duration: 0.3
+        });
+      });
+    }
+  
+    // SCROLL TRIGGERS GLOBAIS
+    function setupGlobalScrollTriggers() {
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: 'top top',
+        end: 'bottom bottom',
+        onUpdate: (self) => {
+          if (progressBarRef.current) {
+            gsap.set(progressBarRef.current, {
+              scaleX: self.progress
+            });
+          }
+        }
+      });
+  
+      setupFooterAnimation();
+    }
+  
+    // ANIMAÇÃO DO FOOTER
+    function setupFooterAnimation() {
+      ScrollTrigger.create({
+        trigger: footerRef.current,
+        start: 'top top',
+        end: `+=${window.innerHeight * 3}px`,
+        pin: true,
+        pinSpacing: true,
+        onEnter: () => {
+          if (projectNavRef.current && !isTransitioning) {
+            gsap.to(projectNavRef.current, {
+              y: -100,
+              duration: 0.5,
+              ease: 'power2.inOut'
+            });
+          }
+        },
+        onLeaveBack: () => {
+          if (projectNavRef.current && !isTransitioning) {
+            gsap.to(projectNavRef.current, {
+              y: 0,
+              duration: 0.5,
+              ease: 'power2.inOut'
+            });
+          }
+        },
+        onUpdate: (self) => {
+          handleFooterProgress(self);
+        }
+      });
+    }
+  
+    // CONTROLE DE PROGRESSO DO FOOTER
+    function handleFooterProgress(self: ScrollTrigger) {
+      if (nextProjectProgressBarRef.current && shouldUpdateBarProgress) {
+        gsap.set(nextProjectProgressBarRef.current, {
+          scaleX: self.progress,
+        });
+      }
+  
+      if (self.progress >= 1 && !isTransitioning) {
+        setShouldUpdateBarProgress(false);
+        setIsTransitioning(true);
+        animateNextProjectTransition();
+      }
+    }
+  
+    // TRANSIÇÃO PARA O PRÓXIMO PROJETO
+    function animateNextProjectTransition() {
+      const theTimeLine = gsap.timeline();
+  
+      theTimeLine.set(nextProjectProgressBarRef.current, {
+        scaleX: 1
+      });
+  
+      theTimeLine.to(
+        [
+          footerRef.current?.querySelector("#next-project-title-footer"),
+          footerRef.current?.querySelector("#next-project-progress-bar-footer")
+        ],
+        {
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.inOut'
+        }
+      );
+  
+      theTimeLine.call(() => {
+        window.location.href = `/projects/${nextProject.slug}`;
+      });
+    }
+  
+    // LIMPEZA
+    function cleanupAnimations() {
+      return () => {
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      };
+    }
+  
+    setupInitialAnimations();
+    setupGalleryAnimations();
+    setupGlobalScrollTriggers();
+  
+    return cleanupAnimations();
+  
+  }, [nextProject.slug, isTransitioning, shouldUpdateBarProgress, project?.description]);
 
   if(!project) {
     return (
@@ -191,12 +303,14 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
         {project.images && project.images.map((image, index) => (
           <div
             key={index}
+            className="image-container overflow-hidden rounded-xl will-change-transform"
           >
             <Image 
               src={image} 
               alt={`Image of ${project.title}`}
               width={1000}
               height={500}
+              className="w-full h-auto object-cover rounded-lg shadow-2xl cursor-pointer"
             />
           </div>
         ))}
