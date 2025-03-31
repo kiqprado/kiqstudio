@@ -345,6 +345,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
           </div>
         ))}
       </div>
+      
       <div 
         ref={footerRef}
         className='relative h-screen w-full flex flex-col justify-center items-center'

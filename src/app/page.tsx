@@ -47,6 +47,10 @@ export default function Home() {
             <ArrowBigRightDash/>
             <Link href='/contacts'>Let’s Pretend We’re Formal (But Really, Let’s Talk)</Link>
             </li>
+            <li className='flex items-center gap-1.5'>
+            <ArrowBigRightDash/>
+            <Link href='/admin'>Insert new Project</Link>
+            </li>
           </ul>
       </div>
       )}
