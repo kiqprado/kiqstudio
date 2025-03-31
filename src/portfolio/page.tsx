@@ -4,6 +4,7 @@ export interface Iprojects {
   title: string
   description: string
   images: string[]
+  images_captions: string[]
 }
 
 export interface IContacts {
@@ -26,6 +27,11 @@ const projects: Iprojects[] = [
       '/PlannEr_1-1.png',
       '/PlannEr_1-1.png',
       '/PlannEr_1-1.png'
+    ],
+    images_captions: [
+      'This image introduces you to a very first page of the project',
+      'Want to see? click it!',
+      'Ayo, squad! This project was born from a minor glitch that keeps messin’ with our daily vibe. Time to level up and maximize our grind?'
     ]
   },
   {
@@ -37,6 +43,11 @@ const projects: Iprojects[] = [
       '/Focus_1-1.png',
       '/Focus_1-1.png',
       '/Focus_1-1.png'
+    ],
+    images_captions: [
+      'This image introduces you to a very first page of the project',
+      'Want to see? click it!',
+      'Ayo, squad! This project was born from a minor glitch that keeps messin’ with our daily vibe. Time to level up and maximize our grind?'
     ]
   },
   {
@@ -48,6 +59,11 @@ const projects: Iprojects[] = [
       '/Habits_1-1.png',
       '/Habits_1-1.png',
       '/Habits_1-1.png'
+    ],
+    images_captions: [
+      'This image introduces you to a very first page of the project',
+      'Want to see? click it!',
+      'Ayo, squad! This project was born from a minor glitch that keeps messin’ with our daily vibe. Time to level up and maximize our grind?'
     ]
   }
 ]

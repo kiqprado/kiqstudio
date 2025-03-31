@@ -26,16 +26,17 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
   const projectNavRef = useRef(null)
   const progressBarRef = useRef(null)
   const descriptionTextRef = useRef(null)
+  const captionImageTextRef = useRef<(HTMLSpanElement | null)[]>([])
   const footerRef = useRef(null)
   const nextProjectProgressBarRef = useRef(null)
 
   const [ isTransitioning, setIsTransitioning ] = useState(false)
   const [ shouldUpdateBarProgress, setShouldUpdateBarProgress ] = useState(true)
 
-  
-
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+    if (!project) return
   
     // ANIMAÇÕES INICIAIS
     function setupInitialAnimations() {
@@ -69,7 +70,8 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
       const imageContainers = gsap.utils.toArray('.image-container') as HTMLElement[];
       
       imageContainers.forEach((container, index) => {
-        const image = container.querySelector('img');
+        const image = container.querySelector('img')
+        const caption = captionImageTextRef.current[index]
   
         gsap.set(container, {
           opacity: 0,
@@ -111,6 +113,22 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
           duration: 0.8,
           ease: 'power2.out'
         }, '-=0.8');
+
+        if(caption && project?.images_captions[index]) {
+          tl.fromTo(caption,
+            { text: '',
+              opacity: 0
+            },
+            {
+              text: project.images_captions[index],
+              opacity: 1,
+              duration: 1.2,
+              delay: 0.9 + (index * 0.5),
+              ease: 'none'
+            },
+            '-=0.5'
+          )
+        }
   
         // Efeito parallax
         gsap.to(image, {
@@ -122,7 +140,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
             scrub: 1
           }
         });
-  
+        
         setupImageHoverEffects(container, image);
       });
     }
@@ -249,7 +267,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
   
     return cleanupAnimations();
   
-  }, [nextProject.slug, isTransitioning, shouldUpdateBarProgress, project?.description]);
+  }, [project, nextProject.slug, isTransitioning, shouldUpdateBarProgress, project?.description]);
 
   if(!project) {
     return (
@@ -299,23 +317,34 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
         </p>
       </div>
 
-      <div className='flex flex-col gap-8'>
-        {project.images && project.images.map((image, index) => (
+      <div className='flex flex-col gap-2 px-4 py-2'>
+        {project?.images?.map((image, index) => (
           <div
             key={index}
-            className="image-container overflow-hidden rounded-xl will-change-transform"
+            className={`flex flex-row ${index % 2 === 0 ? '' : 'flex-row-reverse'}`}
           >
-            <Image 
-              src={image} 
-              alt={`Image of ${project.title}`}
-              width={1000}
-              height={500}
-              className="w-full h-auto object-cover rounded-lg shadow-2xl cursor-pointer"
-            />
+            <div className='image-container overflow-hidden rounded-xl will-change-transform flex-1'>
+              <Image
+                src={image}
+                alt={`Image of ${project.title}`}
+                width={1000}
+                height={500}
+                className='w-full object-cover rounded-lg shadow-2xl cursor-pointer'
+              />
+            </div>
+
+            <div
+              className={`${index % 2 === 0 ? 'ml-3' : 'mr-3'} flex flex-1 items-center justify-center text-justify`}
+            >
+              <span
+                ref={el => captionImageTextRef.current[index] = el}
+              >
+                {project.images_captions[index]}
+              </span>
+            </div>
           </div>
         ))}
       </div>
-
       <div 
         ref={footerRef}
         className='relative h-screen w-full flex flex-col justify-center items-center'
