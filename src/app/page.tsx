@@ -36,7 +36,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    function setupInitialMenuStates() {
+    function SetUpInitialMenuStates() {
       gsap.set(headerMenuOptions.current, {
         x: '100%',
         opacity: 0
@@ -54,109 +54,123 @@ export default function Home() {
     function AnimateHeaderMenu() {
       if(!headerMenuOptions.current) return
 
-      if(toggleHeaderMenuModal) {
+      const animation  = toggleHeaderMenuModal ? 
         gsap.to(headerMenuOptions.current, {
-          x: '0',
+          x: '0%',
           opacity: 1,
           duration: 1.1,
           ease: 'power2.inOut'
         })
-      } else {
-        setToggleOptionsProjectMenu(false)
-        setToggleOptionsContactMenu(false)
-
+      : 
         gsap.to(headerMenuOptions.current, {
           x: '100%',
           opacity: 0,
           duration: 0.9,
-          ease: 'power2.inOut'
+          ease: 'power2.inOut',
+          onComplete: () => {
+            setToggleOptionsProjectMenu(false)
+            setToggleOptionsContactMenu(false)
+          }
         })
-      }
+
+      return () => animation.kill()
     }
 
-    function AnimateProjectMenu() {
-      if(!projectsMenuOptions.current || !toggleHeaderMenuModal) return
+    SetUpInitialMenuStates()
+    const headerCleanUp = AnimateHeaderMenu()
 
-      if(toggleOptionsProjectMenu) {
+    return () => {
+      headerCleanUp?.()
+      gsap.killTweensOf(headerMenuOptions.current)
+    }
+
+  }, [toggleHeaderMenuModal])
+
+  useEffect(() => {
+    function AnimateProjectMenu() {
+      if(!projectsMenuOptions || !toggleHeaderMenuModal) return
+
+      const animation = toggleOptionsProjectMenu ? (
         gsap.to(projectsMenuOptions.current, {
-          y: '0%',
+          y: '0',
           opacity: 1,
-          duration: 0.9,
+          duration: 1.1,
           ease: 'power2.inOut'
         })
-      } else {
+      ) : (
         gsap.to(projectsMenuOptions.current, {
           y: '-200%',
           opacity: 0,
-          duration: 0.7,
+          duration: 0.9,
           ease: 'power2.inOut'
         })
-      }
+      )
+
+      return () => animation.kill()
     }
 
     function AnimateContactMenu() {
-      if(!contactsMenuOptions.current || !toggleHeaderMenuModal) return
+      if(!contactsMenuOptions || !toggleHeaderMenuModal)  return
 
-      if(toggleOptionsContactMenu) {
+      const animation = toggleOptionsContactMenu ? 
         gsap.to(contactsMenuOptions.current, {
-          y: '0%',
+          y: '0',
           opacity: 1,
-          duration: 0.9,
+          duration: 1.1,
           ease: 'power2.inOut'
         })
-      } else {
+      : 
         gsap.to(contactsMenuOptions.current, {
           y: '-200%',
           opacity: 0,
-          duration: 0.7,
+          duration: 0.9,
           ease: 'power2.inOut'
         })
-      }
+
+      return () => animation.kill()
     }
 
-    function cleanUpTrigger() {
-      return () => {
-        gsap.killTweensOf(headerMenuOptions.current)
-        gsap.killTweensOf(projectsMenuOptions.current)
-        gsap.killTweensOf(contactsMenuOptions.current)
-      }
+    const projectCleanUp = AnimateProjectMenu()
+    const contactCleanUp = AnimateContactMenu()
+
+    return () => {
+      projectCleanUp?.()
+      contactCleanUp?.()
+      gsap.killTweensOf(projectsMenuOptions.current)
+      gsap.killTweensOf(contactsMenuOptions.current)
     }
 
-    setupInitialMenuStates()
-    AnimateHeaderMenu()
-    AnimateProjectMenu()
-    AnimateContactMenu()
-
-    return cleanUpTrigger()
   }, [toggleHeaderMenuModal, toggleOptionsProjectMenu, toggleOptionsContactMenu])
 
   return (
     <div className='h-screen flex flex-col'>
 
       <header 
-        className='flex items-center px-4 w-full h-12 border-b-1 border-zinc-700/70 justify-between relative overflow-x-clip'
+        className='flex items-center justify-between  overflow-x-clip relative px-4 w-full h-12 border-b-1 border-zinc-700/70'
       >
         <h1 className='text-2xl'>KIQ STUDIO</h1>
 
+        
+          
         <button
           onClick={HandleToggleHeaderMenuModal}
-          className='leading-0 border-1 rounded-md px-2 py-1 text-zinc-400 hover:text-zinc-200'
+          className="relative right-4 px-16 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
         >
+          <span className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.700)_30%,_theme(colors.zinc.500)_55%,_theme(colors.zinc.800)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" />
           { toggleHeaderMenuModal === false ? (
             <ArrowLeftFromLine className='size-6'/>
           ) : (
             <ArrowRightToLine className='size-6'/>
           )}
-          
         </button>
 
       
       { toggleHeaderMenuModal && (
         <div 
           ref={headerMenuOptions}
-          className='absolute flex items-center h-12 ml-44  border-zinc-700/35'
+          className='absolute ml-52 flex items-center  border-zinc-700/35'
         >
-          <ul className='flex gap-4 items-center relative'> 
+          <ul className='w-full flex gap-4 items-center'> 
               <button
               onClick={HandleToggleOptionsProjectMenu}
               className='flex items-center gap-1.5 cursor-pointer text-zinc-200 hover:text-zinc-50'
@@ -179,10 +193,6 @@ export default function Home() {
               <CircleSmall className='size-3'/>
               Let’s Pretend We’re Formal (But Really, Let’s Talk)
             </button>
-            <li className='flex items-center gap-1.5 cursor-pointer text-zinc-200 hover:text-zinc-50'>
-              <CircleSmall className='size-3'/>
-              <Link href='/admin'>Insert new Project</Link>
-            </li>
           </ul>
       </div>
       )}
