@@ -4,3 +4,16 @@ body {
   font-family: "Gruppo", sans-serif;
   letter-spacing: 0.4;
 }
+
+
+
+
+@keyframes loading {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(0); opacity: 0; }
+}
+
+.animate-loading {
+  animation: loading 1s linear;
+}

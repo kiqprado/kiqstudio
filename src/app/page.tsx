@@ -5,14 +5,27 @@ import { useState, useEffect, useRef } from "react";
 import gsap from 'gsap'
 
 import Link from "next/link";
+import Image from "next/image";
+import logo from '../../public/logo-menu.svg'
+import logo_hover from '../../public/logo-menu-hover.svg'
 
 import { projects, contacts } from '@/portfolio/page'
 
+import { AnimatedUnderLine } from '@/app/animations/animated-under-line'
+
 import { Footer } from "@/components/footer";
 
-import { ArrowLeftFromLine, ArrowRightToLine, CircleSmall } from 'lucide-react'
+import { ArrowLeftFromLine, ArrowRightToLine } from 'lucide-react'
+
+enum MenuItems {
+  WORK = 'work',
+  Human = 'human',
+  Contact = 'contact'
+}
 
 export default function Home() {
+  const [ isLogoImgOnHover, setIsLogoImgOnHover ] = useState(false)
+
   const headerMenuOptions = useRef(null)
   const projectsMenuOptions = useRef(null)
   const contactsMenuOptions = useRef(null)
@@ -20,6 +33,12 @@ export default function Home() {
   const [ toggleHeaderMenuModal, setToggleHeaderMenuModal ] = useState(false)
   const [ toggleOptionsProjectMenu, setToggleOptionsProjectMenu ] = useState(false)
   const [ toggleOptionsContactMenu, setToggleOptionsContactMenu ] = useState(false)
+
+  const [ isMouseOnHoverMenuOption, setIsMouseOnHoverMenuOption ] = useState<MenuItems | null>(null)
+
+  function HandleHoverLogoImg() {
+    setIsLogoImgOnHover((prev) => !prev)
+  }
 
   function HandleToggleHeaderMenuModal() {
     setToggleHeaderMenuModal((prev) => !prev)
@@ -146,17 +165,35 @@ export default function Home() {
     <div className='h-screen flex flex-col'>
 
       <header 
-        className='flex items-center justify-between  overflow-x-clip relative px-4 w-full h-12 border-b-1 border-zinc-700/70'
+        className='flex items-center justify-between  overflow-x-clip relative px-6 w-full h-16 border-b-1 border-zinc-700/70'
       >
-        <h1 className='text-2xl'>KIQ STUDIO</h1>
-
+        <div
+          onMouseEnter={HandleHoverLogoImg}
+          onMouseLeave={HandleHoverLogoImg}
+          className='cursor-pointer'
+        >
+          {isLogoImgOnHover ? (
+            <Image
+            src={logo_hover}
+            alt={`image of ${logo_hover}`}
+            height={132}
+            width={222}
+          />
+          ):(
+            <Image
+              src={logo}
+              alt={`Image of ${logo}`}
+              height={132}
+              width={222}
+            />
+          )} 
+        </div>
         
-          
         <button
           onClick={HandleToggleHeaderMenuModal}
-          className="relative right-4 px-16 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
+          className="relative right-4 px-6 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
         >
-          <span className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.700)_30%,_theme(colors.zinc.500)_55%,_theme(colors.zinc.800)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" />
+          <span className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.800)_30%,_theme(colors.zinc.500)_55%,_theme(colors.zinc.800)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" />
           { toggleHeaderMenuModal === false ? (
             <ArrowLeftFromLine className='size-6'/>
           ) : (
@@ -168,30 +205,43 @@ export default function Home() {
       { toggleHeaderMenuModal && (
         <div 
           ref={headerMenuOptions}
-          className='absolute ml-52 flex items-center  border-zinc-700/35'
+          className='absolute ml-68 flex items-center  border-zinc-700/35'
         >
-          <ul className='w-full flex gap-4 items-center'> 
-              <button
+          <ul className='w-full flex gap-8 items-center'> 
+            <button
               onClick={HandleToggleOptionsProjectMenu}
-              className='flex items-center gap-1.5 cursor-pointer text-zinc-200 hover:text-zinc-50'
+              onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.WORK)}
+              onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
+              className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
             >
-              <CircleSmall className='size-3'/>
-              The Work (No Fluff, Just Vibes)
+              <span className='text-lg'>The Work (No Fluff, Just Vibes)</span>
+              <AnimatedUnderLine
+                active={isMouseOnHoverMenuOption === MenuItems.WORK}
+              />
             </button>
 
-            
             <button
-              className='flex items-center gap-1.5 cursor-pointer text-zinc-200 hover:text-zinc-50'
+              onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.Human)}
+              onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
+              className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
             >
-              <CircleSmall className='size-3'/>
-              The Human Behind the Pixels
+              <span className='text-lg'>The Human Behind the Pixels</span>
+              <AnimatedUnderLine
+                active={isMouseOnHoverMenuOption === MenuItems.Human}
+              />
             </button>
+
             <button
               onClick={HandleToggleOptionsContactMenu}
-              className='flex items-center gap-1.5 cursor-pointer text-zinc-200 hover:text-zinc-50'
-            >
-              <CircleSmall className='size-3'/>
-              Let’s Pretend We’re Formal (But Really, Let’s Talk)
+              onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.Contact)}
+              onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
+              className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
+            > 
+              <span className='text-lg'>Let’s Pretend We’re Formal (Really, Let’s Talk)</span>
+            
+              <AnimatedUnderLine
+                active={isMouseOnHoverMenuOption === MenuItems.Contact}
+              />
             </button>
           </ul>
       </div>
@@ -200,7 +250,7 @@ export default function Home() {
       { toggleOptionsProjectMenu && (
         <ul 
           ref={projectsMenuOptions}
-          className='absolute top-12 left-46'
+          className='absolute top-16 left-72'
           style={{ opacity: 0, transform: 'translateY(-200%)'}}
         >
           {projects.map((project) => (
@@ -221,7 +271,7 @@ export default function Home() {
       { toggleOptionsContactMenu && (
         <ul 
           ref={contactsMenuOptions}
-          className='absolute top-12 right-62'
+          className='absolute top-16 right-30'
           style={{ opacity: 0, transform: 'translateY(-200%)'}}
         >
           {contacts.map((contact) => (
