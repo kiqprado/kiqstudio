@@ -12,6 +12,7 @@ import logo_hover from '../../public/logo-menu-hover.svg'
 import { projects, contacts } from '@/portfolio/page'
 
 import { AnimatedUnderLine } from '@/app/animations/animated-under-line'
+import { AnimatedGraphicsLines } from "./animations/animated-graphics-lines";
 
 import { Footer } from "@/components/footer";
 
@@ -205,7 +206,7 @@ export default function Home() {
       { toggleHeaderMenuModal && (
         <div 
           ref={headerMenuOptions}
-          className='absolute ml-68 flex items-center  border-zinc-700/35'
+          className='absolute z-10 ml-68 flex items-center  border-zinc-700/35'
         >
           <ul className='w-full flex gap-8 items-center'> 
             <button
@@ -250,7 +251,7 @@ export default function Home() {
       { toggleOptionsProjectMenu && (
         <ul 
           ref={projectsMenuOptions}
-          className='absolute top-16 left-72'
+          className='absolute top-16 left-72 z-20'
           style={{ opacity: 0, transform: 'translateY(-200%)'}}
         >
           {projects.map((project) => (
@@ -271,7 +272,7 @@ export default function Home() {
       { toggleOptionsContactMenu && (
         <ul 
           ref={contactsMenuOptions}
-          className='absolute top-16 right-30'
+          className='absolute top-16 right-30 z-20'
           style={{ opacity: 0, transform: 'translateY(-200%)'}}
         >
           {contacts.map((contact) => (
@@ -291,9 +292,11 @@ export default function Home() {
       </header>
 
 
-      <div className='flex-1 overflow-y-auto'>
+      <div className='flex-1 overflow-y-auto px-6'>
 
-      </div>
+      <AnimatedGraphicsLines/>
+        
+      </div>  
 
       <Footer/>
     </div>
