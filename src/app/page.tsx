@@ -159,10 +159,12 @@ export default function Home() {
     <div className='h-screen flex flex-col'>
 
       <header 
-        className='flex items-center justify-between  overflow-x-clip relative px-6 w-full h-16 border-b-1 border-zinc-700/70'
+        className='flex items-center justify-between  overflow-x-clip relative px-6 w-full h-18'
       >
         <Logo/>
-       
+
+        <div className='border-b-1 pl-24 h-8 w-full border-zinc-700 '/>
+
         <button
           onClick={HandleToggleHeaderMenuModal}
           className="relative right-4 px-6 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
