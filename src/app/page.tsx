@@ -4,16 +4,14 @@ import { useState, useEffect, useRef } from "react";
 
 import gsap from 'gsap'
 
-import Link from "next/link";
-import Image from "next/image";
-import logo from '../../public/logo-menu.svg'
-import logo_hover from '../../public/logo-menu-hover.svg'
+import Link from "next/link"
 
 import { projects, contacts } from '@/portfolio/page'
 
 import { AnimatedUnderLine } from '@/app/animations/animated-under-line'
 import { AnimatedGraphicsLines } from "./animations/animated-graphics-lines";
 
+import { Logo } from "@/elements/logo";
 import { Footer } from "@/components/footer";
 
 import { ArrowLeftFromLine, ArrowRightToLine } from 'lucide-react'
@@ -25,8 +23,6 @@ enum MenuItems {
 }
 
 export default function Home() {
-  const [ isLogoImgOnHover, setIsLogoImgOnHover ] = useState(false)
-
   const headerMenuOptions = useRef(null)
   const projectsMenuOptions = useRef(null)
   const contactsMenuOptions = useRef(null)
@@ -37,10 +33,7 @@ export default function Home() {
 
   const [ isMouseOnHoverMenuOption, setIsMouseOnHoverMenuOption ] = useState<MenuItems | null>(null)
 
-  function HandleHoverLogoImg() {
-    setIsLogoImgOnHover((prev) => !prev)
-  }
-
+ 
   function HandleToggleHeaderMenuModal() {
     setToggleHeaderMenuModal((prev) => !prev)
   }
@@ -168,28 +161,8 @@ export default function Home() {
       <header 
         className='flex items-center justify-between  overflow-x-clip relative px-6 w-full h-16 border-b-1 border-zinc-700/70'
       >
-        <div
-          onMouseEnter={HandleHoverLogoImg}
-          onMouseLeave={HandleHoverLogoImg}
-          className='cursor-pointer'
-        >
-          {isLogoImgOnHover ? (
-            <Image
-            src={logo_hover}
-            alt={`image of ${logo_hover}`}
-            height={132}
-            width={222}
-          />
-          ):(
-            <Image
-              src={logo}
-              alt={`Image of ${logo}`}
-              height={132}
-              width={222}
-            />
-          )} 
-        </div>
-        
+        <Logo/>
+       
         <button
           onClick={HandleToggleHeaderMenuModal}
           className="relative right-4 px-6 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
@@ -251,7 +224,7 @@ export default function Home() {
       { toggleOptionsProjectMenu && (
         <ul 
           ref={projectsMenuOptions}
-          className='absolute top-16 left-72 z-20'
+          className='absolute top-16 left-72 z-30'
           style={{ opacity: 0, transform: 'translateY(-200%)'}}
         >
           {projects.map((project) => (
@@ -272,7 +245,7 @@ export default function Home() {
       { toggleOptionsContactMenu && (
         <ul 
           ref={contactsMenuOptions}
-          className='absolute top-16 right-30 z-20'
+          className='absolute top-16 right-30 z-30'
           style={{ opacity: 0, transform: 'translateY(-200%)'}}
         >
           {contacts.map((contact) => (
@@ -293,9 +266,8 @@ export default function Home() {
 
 
       <div className='flex-1 overflow-y-auto px-6'>
-
-      <AnimatedGraphicsLines/>
-        
+        <AnimatedGraphicsLines/>
+      
       </div>  
 
       <Footer/>

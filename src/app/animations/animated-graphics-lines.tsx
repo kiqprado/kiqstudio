@@ -72,39 +72,37 @@ export function AnimatedGraphicsLines() {
     <div className='h-full border-x border-zinc-900/30 mx-6 relative'>
       <div className='border-b border-zinc-900/30 h-26'/>
     
-      <div className='absolute left-[-4] top-25'>
+      <div className='absolute left-[-4] top-25 z-20'>
         <div
           ref={circleRef}
-          className='h-2 w-2 rounded-xl  bg-zinc-500 hover:bg-zinc-300 relative'/>
-        <div>
-          <svg 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0" 
-            width="40" 
-            height="40" 
-            viewBox="0 0 40 40"
-          >
-            <path
-              ref={arcPathRef}
-              d="M 20 4 A 16 16 0 0 1 20 36"
-              fill="none"
-              stroke="rgb(244 244 245)"
-              strokeWidth="1"
-              strokeLinecap="round"
-            />
-      </svg>
-      
-        </div>
+          className='h-2 w-2 rounded-xl  bg-zinc-500 hover:bg-zinc-300 relative'
+        />
+        <svg 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0" 
+          width="40" 
+          height="40" 
+          viewBox="0 0 40 40"
+        >
+          <path
+            ref={arcPathRef}
+            d="M 20 4 A 16 16 0 0 1 20 36"
+            fill="none"
+            stroke="rgb(244 244 245)"
+            strokeWidth="1"
+            strokeLinecap="round"
+          />
+        </svg> 
       </div>
       
-      <div className='absolute right-112 top-25'>
+      <div className='absolute right-112 top-25 z-20'>
         <div
           ref={squareRef}
-          className='h-2 w-2 rotate-45 bg-zinc-500 hover:bg-zinc-300 relative cursor-pointer'
+          className='h-2 w-2 rotate-45 bg-zinc-500 hover:bg-zinc-300 relative'
         />
         <svg
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
-          width="48"
-          height="48"
+          width="58"
+          height="58"
           viewBox="0 0 48 48"
         >
           <path
