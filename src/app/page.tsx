@@ -12,9 +12,9 @@ import { AnimatedUnderLine } from '@/app/animations/animated-under-line'
 import { AnimatedGraphicsLines } from "./animations/animated-graphics-lines";
 
 import { Logo } from "@/elements/logo";
-import { Footer } from "@/components/footer";
 
-import { ArrowLeftFromLine, ArrowRightToLine } from 'lucide-react'
+import { Footer } from "@/components/footer";
+import { LocationTimeDisplay } from "@/components/location-and-time-display";
 
 enum MenuItems {
   WORK = 'work',
@@ -47,7 +47,6 @@ export default function Home() {
     setToggleOptionsContactMenu((prev) => !prev)
     setToggleOptionsProjectMenu(false)
   }
-
   useEffect(() => {
     function SetUpInitialMenuStates() {
       gsap.set(headerMenuOptions.current, {
@@ -55,11 +54,11 @@ export default function Home() {
         opacity: 0
       })
       gsap.set(projectsMenuOptions.current, {
-        y: '-200%',
+        y: '-100%',
         opacity: 0
       })
       gsap.set(contactsMenuOptions.current, {
-        y: '-200%',
+        y: '-100%',
         opacity: 0
       })
     }
@@ -101,46 +100,67 @@ export default function Home() {
 
   useEffect(() => {
     function AnimateProjectMenu() {
-      if(!projectsMenuOptions || !toggleHeaderMenuModal) return
+      if(!projectsMenuOptions || !toggleHeaderMenuModal) return;
 
-      const animation = toggleOptionsProjectMenu ? (
-        gsap.to(projectsMenuOptions.current, {
-          y: '0',
-          opacity: 1,
-          duration: 1.1,
-          ease: 'power2.inOut'
-        })
-      ) : (
-        gsap.to(projectsMenuOptions.current, {
-          y: '-200%',
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power2.inOut'
-        })
-      )
+      const animation = gsap.timeline({ 
+        defaults: { 
+          duration: 0.5, 
+          ease: 'power2.inOut' 
+        } 
+      })
 
-      return () => animation.kill()
+      if (toggleHeaderMenuModal) {
+        animation.to(projectsMenuOptions.current, { 
+          opacity: 1, 
+          y: '0' 
+        })
+        projectsMenuOptions.current?.querySelectorAll('li').forEach((item: string, index: number) => {
+          animation.from(item, { 
+            opacity: 0, 
+            y: '-50%', 
+            delay: index * 0.3 
+          })
+        })
+      } else {
+        animation.to(projectsMenuOptions.current, { 
+          opacity: 0, 
+          y: '-100%' 
+        });
+      }
+
+      return () => animation.kill();
     }
 
     function AnimateContactMenu() {
-      if(!contactsMenuOptions || !toggleHeaderMenuModal)  return
+      if(!contactsMenuOptions || !toggleHeaderMenuModal) return
 
-      const animation = toggleOptionsContactMenu ? 
-        gsap.to(contactsMenuOptions.current, {
-          y: '0',
+      const animation = gsap.timeline({ 
+        defaults: {
+          duration: 0.5, 
+          ease: 'power2.inOut'   
+        }
+      })
+
+      if(toggleHeaderMenuModal) {
+        animation.to(contactsMenuOptions.current, {
           opacity: 1,
-          duration: 1.1,
-          ease: 'power2.inOut'
+          y: '0%'
         })
-      : 
-        gsap.to(contactsMenuOptions.current, {
-          y: '-200%',
+        contactsMenuOptions.current?.querySelectorAll('li').forEach((item: string, index: number) => {
+          animation.from(item, {
+            opacity: 0,
+            y: '-50%',
+            delay: index * 0.3
+          })
+        })
+      } else {
+        animation.to(contactsMenuOptions.current, {
           opacity: 0,
-          duration: 0.9,
-          ease: 'power2.inOut'
+          y: '-100%'
         })
+      }
 
-      return () => animation.kill()
+      return() => animation.kill()
     }
 
     const projectCleanUp = AnimateProjectMenu()
@@ -167,30 +187,26 @@ export default function Home() {
 
         <button
           onClick={HandleToggleHeaderMenuModal}
-          className="relative right-4 px-6 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
+          className="absolute z-30 right-4 px-6 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
         >
-          <span className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.800)_30%,_theme(colors.zinc.500)_55%,_theme(colors.zinc.800)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" />
-          { toggleHeaderMenuModal === false ? (
-            <ArrowLeftFromLine className='size-6'/>
-          ) : (
-            <ArrowRightToLine className='size-6'/>
+          <span className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.900)_30%,_theme(colors.zinc.800)_55%,_theme(colors.zinc.900)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" />
+          { toggleHeaderMenuModal ? (
+            <span className="font-bold text-lg">I`m done</span>
+          ): (
+            <span className="font-bold text-lg">... Options</span>
           )}
         </button>
 
       
       { toggleHeaderMenuModal && (
-        <div 
-          ref={headerMenuOptions}
-          className='absolute z-10 ml-68 flex items-center  border-zinc-700/35'
-        >
-          <ul className='w-full flex gap-8 items-center'> 
+          <ul ref={headerMenuOptions} className='absolute w-[66%] flex items-center justify-between px-26 ml-66'> 
             <button
               onClick={HandleToggleOptionsProjectMenu}
               onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.WORK)}
               onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
               className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
             >
-              <span className='text-lg'>The Work (No Fluff, Just Vibes)</span>
+              <span className='text-lg'>[ The Work ]</span>
               <AnimatedUnderLine
                 active={isMouseOnHoverMenuOption === MenuItems.WORK}
               />
@@ -201,7 +217,7 @@ export default function Home() {
               onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
               className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
             >
-              <span className='text-lg'>The Human Behind the Pixels</span>
+              <span className='text-lg'>[ Behind the Pixels ]</span>
               <AnimatedUnderLine
                 active={isMouseOnHoverMenuOption === MenuItems.Human}
               />
@@ -213,26 +229,25 @@ export default function Home() {
               onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
               className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
             > 
-              <span className='text-lg'>Let’s Pretend We’re Formal (Really, Let’s Talk)</span>
+              <span className='text-lg'>[ Let’s Talk ]</span>
             
               <AnimatedUnderLine
                 active={isMouseOnHoverMenuOption === MenuItems.Contact}
               />
             </button>
           </ul>
-      </div>
       )}
 
       { toggleOptionsProjectMenu && (
         <ul 
           ref={projectsMenuOptions}
-          className='absolute top-16 left-72 z-30'
+          className='absolute top-14 left-78 z-30'
           style={{ opacity: 0, transform: 'translateY(-200%)'}}
         >
           {projects.map((project) => (
             <li
               key={project.id}
-              className='w-66 hover:border hover:bg-zinc-900/50 border-zinc-500 hover:font-bold rounded-sm text-center'
+              className='w-66 hover:font-bold rounded-sm text-center'
             >
               <Link
                 href={`/projects/${project.slug}`}
@@ -247,13 +262,13 @@ export default function Home() {
       { toggleOptionsContactMenu && (
         <ul 
           ref={contactsMenuOptions}
-          className='absolute top-16 right-30 z-30'
+          className='absolute top-14 right-48 z-30'
           style={{ opacity: 0, transform: 'translateY(-200%)'}}
         >
           {contacts.map((contact) => (
             <li
               key={contact.id}
-              className='w-94 hover:border hover:bg-zinc-900/50 border-zinc-500 hover:font-bold rounded-sm text-center'
+              className='w-66 hover:font-bold rounded-sm text-center'
             >
               <Link 
                 href={`/contacts/${contact.slug}`}
@@ -269,6 +284,8 @@ export default function Home() {
 
       <div className='flex-1 overflow-y-auto px-6'>
         <AnimatedGraphicsLines/>
+
+        <LocationTimeDisplay/>
       
       </div>  
 
