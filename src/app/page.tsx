@@ -196,7 +196,7 @@ export default function Home() {
         >
           <span className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.900)_30%,_theme(colors.zinc.800)_55%,_theme(colors.zinc.900)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" />
           { toggleHeaderMenuModal ? (
-            <div className="flex items-center gap-1 font-bold text-lg cursor-pointer">
+            <div className="flex items-center gap-1 font-bold text-lg cursor-pointer transition-all duration-500 ease-in-out hover:text-red-500">
               <X/>
               <span>Close</span>
             </div>
@@ -217,6 +217,8 @@ export default function Home() {
             <AnimatedUnderLine
               active={isMouseOnHoverMenuOption === MenuItems.WORK}
             />
+
+            <span className='absolute right-[-20] bottom-0 text-xs font-bold text-red-500'>//{`${projects.length}`.padStart(2, '0')}</span>
           </button>
 
           <button
@@ -228,6 +230,8 @@ export default function Home() {
             <AnimatedUnderLine
               active={isMouseOnHoverMenuOption === MenuItems.Human}
             />
+
+            <span className='absolute right-[-18] bottom-0 text-xs font-bold text-red-500'>//01</span>
           </button>
 
           <button
@@ -240,6 +244,8 @@ export default function Home() {
             <AnimatedUnderLine
               active={isMouseOnHoverMenuOption === MenuItems.Contact}
             />
+
+            <span className='absolute right-[-20] bottom-0 text-xs font-bold text-red-500'>//{`${contacts.length}`.padStart(2, '0')}</span>
           </button>
         </ul>
       )}
@@ -288,11 +294,22 @@ export default function Home() {
       </header>
 
 
-      <div className='flex-1 overflow-y-auto px-8'>
+      <div className='flex-1 flex flex-col overflow-y-auto px-8'>
+
+        <div className='h-24 border border-lime-300'>
+          <LocationTimeDisplay/>
+        </div>
+
+        <div className='flex-1 flex border border-emerald-200'>
+          <div className='w-[66%] h-full shrink-0 border border-pink-400 '></div>
+          <div className='text-justify px-6'>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem sunt vel quidem corrupti id ducimus earum laudantium laborum praesentium necessitatibus. Iusto, quos incidunt magnam sed delectus voluptate nobis quam labore!
+            Exercitationem architecto odit dolore blanditiis provident ad quos vel facere suscipit consequuntur dolorem necessitatibus earum ducimus sapiente inventore, maxime mollitia! Excepturi vitae praesentium possimus, dignissimos quidem odio voluptatum vel! Ipsum?
+          </div>
+        </div>
+
+      </div>
         
-        <LocationTimeDisplay/>
-      
-      </div>  
 
       <Footer/>
     </div>
