@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-interface GeolocationPosition {
+interface IGeolocationPosition {
   coords: {
     latitude: number;
     longitude: number;
@@ -13,7 +13,7 @@ interface GeolocationPosition {
   timestamp: number;
 }
 
-interface GeolocationPositionError {
+interface IGeolocationPositionError {
   code: number;
   message: string;
   PERMISSION_DENIED: number;
@@ -22,25 +22,27 @@ interface GeolocationPositionError {
 }
 
 export function LocationTimeDisplay() {
-  const [time, setTime] = useState<string>('')
-  const [latitude, setLatitude] = useState<number | null>(null);
-  const [longitude, setLongitude] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [ time, setTime ] = useState<string>('')
+  const [ latitude, setLatitude ] = useState<number | null>(null)
+  const [ longitude, setLongitude ] = useState<number | null>(null)
+
+  const [ error, setError ] = useState<string | null>(null)
+  const [ isLoading, setIsLoading ] = useState<boolean>(true)
 
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date();
-      setTime(now.toLocaleTimeString());
-    }, 1000);
+      setTime(now.toLocaleTimeString())
+    }, 1000)
 
-    function HandleSuccessReq(position: GeolocationPosition) {
+    function HandleSuccessReq(position: IGeolocationPosition) {
       setLatitude(position.coords.latitude)
       setLongitude(position.coords.longitude)
-      setIsLoading(false)
-    };
 
-    function HandleError(err: GeolocationPositionError) {
+      setIsLoading(false)
+    }
+
+    function HandleError(err: IGeolocationPositionError) {
       let errorMessage = ''
       switch (err.code) {
         case err.PERMISSION_DENIED:
@@ -55,6 +57,7 @@ export function LocationTimeDisplay() {
         default:
           errorMessage = 'An unknown error occurred.'
       }
+
       setError(errorMessage);
       setIsLoading(false);
     }
@@ -76,19 +79,19 @@ export function LocationTimeDisplay() {
   }
 
   return (
-    <div className="location-time-display">
+    <div>
       {error ? (
         <p>{error}</p>
       ) : (
         <div>
           <div>
-            <span className='font-bold'>// Local Time: </span>
-            <span>{time}</span>
+            <span className='font-bold text-sm tracking-widest'>// Local Time: </span>
+            <span className='text-md tracking-widest'>{time}</span>
           </div>
           {latitude && longitude && (
             <div className='ml-2'>
-              <span className='font-bold'>// Coordinates: </span>
-              <span>{latitude.toFixed(4)}, {longitude.toFixed(4)}</span>
+              <span className='font-bold text-sm tracking-widest'>// Coordinates: </span>
+              <span className='text-md tracking-widest'>{latitude.toFixed(4)}, {longitude.toFixed(4)}</span>
             </div>
           )}
         </div>

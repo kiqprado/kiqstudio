@@ -1,20 +1,22 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react'
 
 import gsap from 'gsap'
 
-import Link from "next/link"
+import Link from 'next/link'
 
 import { projects, contacts } from '@/portfolio/page'
 
 import { AnimatedUnderLine } from '@/app/animations/animated-under-line'
-import { AnimatedGraphicsLines } from "./animations/animated-graphics-lines";
+import { AnimatedGraphicsLines } from '@/app/animations/animated-graphics-lines'
 
-import { Logo } from "@/elements/logo";
+import { Logo } from '@/elements/logo'
 
-import { Footer } from "@/components/footer";
-import { LocationTimeDisplay } from "@/components/location-and-time-display";
+import { Footer } from '@/components/footer'
+import { LocationTimeDisplay } from '@/components/location-and-time-display'
+
+import { X } from 'lucide-react'
 
 enum MenuItems {
   WORK = 'work',
@@ -177,6 +179,9 @@ export default function Home() {
 
   return (
     <div className='h-screen flex flex-col'>
+      <div className="fixed inset-0 z-0 pointer-events-auto">
+        <AnimatedGraphicsLines/>
+      </div>
 
       <header 
         className='flex items-center justify-between  overflow-x-clip relative px-6 w-full h-18'
@@ -191,51 +196,52 @@ export default function Home() {
         >
           <span className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.900)_30%,_theme(colors.zinc.800)_55%,_theme(colors.zinc.900)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" />
           { toggleHeaderMenuModal ? (
-            <span className="font-bold text-lg">I`m done</span>
+            <div className="flex items-center gap-1 font-bold text-lg cursor-pointer">
+              <X/>
+              <span>Close</span>
+            </div>
           ): (
-            <span className="font-bold text-lg">... Options</span>
+            <span className="font-bold text-lg cursor-pointer">... Options</span>
           )}
         </button>
 
-      
       { toggleHeaderMenuModal && (
-          <ul ref={headerMenuOptions} className='absolute w-[66%] flex items-center justify-between px-26 ml-66'> 
-            <button
-              onClick={HandleToggleOptionsProjectMenu}
-              onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.WORK)}
-              onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
-              className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
-            >
-              <span className='text-lg'>[ The Work ]</span>
-              <AnimatedUnderLine
-                active={isMouseOnHoverMenuOption === MenuItems.WORK}
-              />
-            </button>
+        <ul ref={headerMenuOptions} className='absolute w-[66%] flex items-center justify-between px-26 ml-66'> 
+          <button
+            onClick={HandleToggleOptionsProjectMenu}
+            onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.WORK)}
+            onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
+            className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
+          >
+            <span className='text-lg'>[ The Work ]</span>
+            <AnimatedUnderLine
+              active={isMouseOnHoverMenuOption === MenuItems.WORK}
+            />
+          </button>
 
-            <button
-              onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.Human)}
-              onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
-              className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
-            >
-              <span className='text-lg'>[ Behind the Pixels ]</span>
-              <AnimatedUnderLine
-                active={isMouseOnHoverMenuOption === MenuItems.Human}
-              />
-            </button>
+          <button
+            onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.Human)}
+            onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
+            className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
+          >
+            <span className='text-lg'>[ Behind the Pixels ]</span>
+            <AnimatedUnderLine
+              active={isMouseOnHoverMenuOption === MenuItems.Human}
+            />
+          </button>
 
-            <button
-              onClick={HandleToggleOptionsContactMenu}
-              onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.Contact)}
-              onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
-              className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
-            > 
-              <span className='text-lg'>[ Let’s Talk ]</span>
-            
-              <AnimatedUnderLine
-                active={isMouseOnHoverMenuOption === MenuItems.Contact}
-              />
-            </button>
-          </ul>
+          <button
+            onClick={HandleToggleOptionsContactMenu}
+            onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.Contact)}
+            onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
+            className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
+          > 
+            <span className='text-lg'>[ Let’s Talk ]</span>
+            <AnimatedUnderLine
+              active={isMouseOnHoverMenuOption === MenuItems.Contact}
+            />
+          </button>
+        </ul>
       )}
 
       { toggleOptionsProjectMenu && (
@@ -282,9 +288,8 @@ export default function Home() {
       </header>
 
 
-      <div className='flex-1 overflow-y-auto px-6'>
-        <AnimatedGraphicsLines/>
-
+      <div className='flex-1 overflow-y-auto px-8'>
+        
         <LocationTimeDisplay/>
       
       </div>  

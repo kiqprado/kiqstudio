@@ -1,5 +1,7 @@
 import { useRef, useEffect } from "react"
+
 import gsap from 'gsap'
+
 
 export function AnimatedGraphicsLines() {
   const triangleRef = useRef<HTMLDivElement>(null)
@@ -97,7 +99,7 @@ export function AnimatedGraphicsLines() {
   }, [])
 
   return(
-    <div className='h-full border-x border-zinc-900/30 mx-6 relative'>
+    <div className='h-full mx-6 mt-16 border-x border-zinc-900/30 relative'>
       <div className='border-b border-zinc-900/30 h-26'/>
 
       <div className='absolute left-[-6] top-2 z-30'>
@@ -106,10 +108,10 @@ export function AnimatedGraphicsLines() {
           className='w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-zinc-500 hover:border-t-zinc-300 relative'
         />
         <svg
-           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0" 
-           width="44" 
-           height="44" 
-           viewBox="0 0 40 40"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0" 
+          width="44" 
+          height="44" 
+          viewBox="0 0 40 40"
         >
           <path
             ref={trianglePathRef}
@@ -143,7 +145,7 @@ export function AnimatedGraphicsLines() {
           />
         </svg> 
       </div>
-      
+    
       <div className='absolute right-112 top-25 z-20'>
         <div
           ref={squareRef}
