@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-import gsap from 'gsap'
-
 import Link from 'next/link'
+
+import gsap from 'gsap'
 
 import { projects, contacts } from '@/portfolio/page'
 
@@ -49,6 +49,7 @@ export default function Home() {
     setToggleOptionsContactMenu((prev) => !prev)
     setToggleOptionsProjectMenu(false)
   }
+
   useEffect(() => {
     function SetUpInitialMenuStates() {
       gsap.set(headerMenuOptions.current, {
@@ -192,15 +193,17 @@ export default function Home() {
 
         <button
           onClick={HandleToggleHeaderMenuModal}
-          className="absolute z-30 right-4 px-6 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
+          className="absolute z-30 right-4 px-2 text-zinc-400 hover:text-zinc-200 overflow-hidden group"
         >
-          <span className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.900)_30%,_theme(colors.zinc.800)_55%,_theme(colors.zinc.900)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" />
+          <span 
+            className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,_theme(colors.zinc.950)_13%,_theme(colors.zinc.900)_30%,_theme(colors.zinc.800)_55%,_theme(colors.zinc.900)_75%,_theme(colors.zinc.950)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none" 
+          />
           { toggleHeaderMenuModal ? (
             <div className="flex items-center gap-1 font-bold text-lg cursor-pointer transition-all duration-500 ease-in-out hover:text-red-500">
               <X/>
               <span>Close</span>
             </div>
-          ): (
+          ):(
             <span className="font-bold text-lg cursor-pointer">... Options</span>
           )}
         </button>
@@ -218,10 +221,15 @@ export default function Home() {
               active={isMouseOnHoverMenuOption === MenuItems.WORK}
             />
 
-            <span className='absolute right-[-20] bottom-0 text-xs font-bold text-red-500'>//{`${projects.length}`.padStart(2, '0')}</span>
+            <span 
+              className='absolute right-[-20] bottom-0 text-xs font-bold text-red-500'
+            >
+              &#47;&#47;{`${projects.length}`.padStart(2, '0')}
+            </span>
           </button>
 
-          <button
+          <Link
+            href={`behind/behind-the-pixel`}
             onMouseEnter={() => setIsMouseOnHoverMenuOption(MenuItems.Human)}
             onMouseLeave={() => setIsMouseOnHoverMenuOption(null)}
             className='flex items-center cursor-pointer text-zinc-200 hover:text-zinc-50 relative'
@@ -231,8 +239,12 @@ export default function Home() {
               active={isMouseOnHoverMenuOption === MenuItems.Human}
             />
 
-            <span className='absolute right-[-18] bottom-0 text-xs font-bold text-red-500'>//01</span>
-          </button>
+            <span 
+              className='absolute right-[-18] bottom-0 text-xs font-bold text-red-500'
+            >
+              &#47;&#47;01
+            </span>
+          </Link>
 
           <button
             onClick={HandleToggleOptionsContactMenu}
@@ -245,7 +257,11 @@ export default function Home() {
               active={isMouseOnHoverMenuOption === MenuItems.Contact}
             />
 
-            <span className='absolute right-[-20] bottom-0 text-xs font-bold text-red-500'>//{`${contacts.length}`.padStart(2, '0')}</span>
+            <span 
+              className='absolute right-[-20] bottom-0 text-xs font-bold text-red-500'
+            >
+              &#47;&#47;{`${contacts.length}`.padStart(2, '0')}
+            </span>
           </button>
         </ul>
       )}
@@ -309,7 +325,6 @@ export default function Home() {
         </div>
 
       </div>
-        
 
       <Footer/>
     </div>
