@@ -102,7 +102,7 @@ export function AnimatedGraphicsLines() {
     <div className='h-full mx-6 mt-16 border-x border-zinc-900/30 relative'>
       <div className='border-b border-zinc-900/30 h-26'/>
 
-      <div className='absolute left-[-6] top-2 z-30'>
+      <div className='absolute left-[-6] top-2'>
         <div
           ref={triangleRef}
           className='w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-zinc-500 hover:border-t-zinc-300 relative'
@@ -124,7 +124,7 @@ export function AnimatedGraphicsLines() {
         </svg>
       </div>
     
-      <div className='absolute left-[-4] top-25 z-20'>
+      <div className='absolute left-[-4] top-25'>
         <div
           ref={circleRef}
           className='h-2 w-2 rounded-xl  bg-zinc-500 hover:bg-zinc-300 relative'
@@ -146,7 +146,7 @@ export function AnimatedGraphicsLines() {
         </svg> 
       </div>
     
-      <div className='absolute right-112 top-25 z-20'>
+      <div className='absolute right-112 top-25'>
         <div
           ref={squareRef}
           className='h-2 w-2 rotate-45 bg-zinc-500 hover:bg-zinc-300 relative'

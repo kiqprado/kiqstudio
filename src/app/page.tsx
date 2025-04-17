@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 import Link from 'next/link'
+import Image from 'next/image'
 
 import gsap from 'gsap'
 
@@ -310,18 +311,39 @@ export default function Home() {
       </header>
 
 
-      <div className='flex-1 flex flex-col overflow-y-auto px-8'>
+      <div className='flex-1 flex flex-col overflow-y-auto px-8 z-10 pointer-events-none'>
 
         <div className='h-24 border border-lime-300'>
           <LocationTimeDisplay/>
         </div>
 
         <div className='flex-1 flex border border-emerald-200'>
-          <div className='w-[66%] h-full shrink-0 border border-pink-400 '></div>
-          <div className='text-justify px-6'>
+          <div className='w-[66%] h-full shrink-0 border border-pink-400'></div>
+
+          <div className='m-6 rounded-4xl border-2 pointer-events-auto'>
+            <div 
+              className='w-fit p-1 border-2 rounded-[50%] border-zinc-700 hover:border-zinc-300 transition-all duration-500 ease-in-out'
+            >
+              <Link
+                href='https://www.linkedin.com/in/kaiqueprado/'
+                target='_blank'
+              >
+                <Image
+                  src={'https://avatars.githubusercontent.com/kiqprado'}
+                  alt={`Pic profile of user`}
+                  width={56}
+                  height={56}
+                  className='rounded-[50%]'
+                />
+              </Link>
+              
+            </div>
+            <div className='px-6 text-justify'>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem sunt vel quidem corrupti id ducimus earum laudantium laborum praesentium necessitatibus. Iusto, quos incidunt magnam sed delectus voluptate nobis quam labore!
-            Exercitationem architecto odit dolore blanditiis provident ad quos vel facere suscipit consequuntur dolorem necessitatibus earum ducimus sapiente inventore, maxime mollitia! Excepturi vitae praesentium possimus, dignissimos quidem odio voluptatum vel! Ipsum?
+              Exercitationem architecto odit dolore blanditiis provident ad quos vel facere suscipit consequuntur dolorem necessitatibus earum ducimus sapiente inventore, maxime mollitia! Excepturi vitae praesentium possimus, dignissimos quidem odio voluptatum vel! Ipsum?
+            </div>
           </div>
+          
         </div>
 
       </div>

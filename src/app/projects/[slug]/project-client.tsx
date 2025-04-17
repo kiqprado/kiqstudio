@@ -1,8 +1,8 @@
 "use client"
 
-import Image from "next/image"
-
 import { useEffect, useRef, useState} from 'react'
+
+import Image from "next/image"
 
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -284,7 +284,7 @@ export default function ProjectClient({ prevProject, project, nextProject}: IPro
       <div className='flex flex-col items-center'>
         <div 
           ref={projectNavRef}
-          className='fixed top-0 left-1/2 -translate-x-1/2 w-1/2 flex items-center justify-between z-2 gap-6 py-6'
+          className='fixed top-0 left-1/2 -translate-x-1/2 w-1/2 flex items-center justify-between z-10 gap-6 py-6'
         >
           <ButtonLink 
             href={`/projects/${prevProject.slug}`}

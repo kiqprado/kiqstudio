@@ -60,7 +60,7 @@ export function LocationTimeDisplay() {
 
       setError(errorMessage);
       setIsLoading(false);
-    }
+    }  
 
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(HandleSuccessReq, HandleError)
