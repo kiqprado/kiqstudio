@@ -9,7 +9,9 @@ interface IBehindThePixel {
 export default function BehindThePixel({ params }: IBehindThePixel) {
   return(
     <div className='px-12 py-6 flex flex-col gap-6'>
-      <h1 className='text-center tracking-widest font-bold text-6xl'>Behind the Pixel</h1>
+      <h1 className='mt-12 text-center tracking-widest font-bold text-6xl'>Behind the Pixel</h1>
+
+      <div className='h-0.5 w-full rounded-2xl bg-zinc-700 hover:bg-zinc-500 transition-all duration-500 ease-in-out'/>
 
       <p className='m-auto text-justify tracking-wide w-202'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque sapiente quisquam dolores similique reiciendis harum aut magni numquam illo ab placeat, explicabo exercitationem ut, odit doloribus officia fuga consequatur praesentium!
       Ad assumenda inventore animi quasi nobis soluta dolores impedit quam quos expedita enim ea doloribus sit ab, vel aut nihil perferendis debitis! Cumque modi reiciendis at inventore, provident sunt natus?

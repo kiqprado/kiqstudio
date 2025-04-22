@@ -6,6 +6,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import gsap from 'gsap'
+import TextPlugin  from 'gsap'
+import lottie, { AnimationItem } from 'lottie-web'
+import { motion, AnimatePresence} from 'framer-motion'
 
 import { projects, contacts } from '@/portfolio/page'
 
@@ -26,9 +29,16 @@ enum MenuItems {
 }
 
 export default function Home() {
+  gsap.registerPlugin(TextPlugin)
+
   const headerMenuOptions = useRef(null)
   const projectsMenuOptions = useRef(null)
   const contactsMenuOptions = useRef(null)
+
+  const titleCarouselRef = useRef<HTMLAnchorElement>(null)
+
+  const gitHubIconRef = useRef<HTMLDivElement>(null)
+  const instagramIconRef = useRef<HTMLDivElement>(null)
 
   const [ toggleHeaderMenuModal, setToggleHeaderMenuModal ] = useState(false)
   const [ toggleOptionsProjectMenu, setToggleOptionsProjectMenu ] = useState(false)
@@ -36,6 +46,10 @@ export default function Home() {
 
   const [ isMouseOnHoverMenuOption, setIsMouseOnHoverMenuOption ] = useState<MenuItems | null>(null)
 
+  const [ currentTitleIndex, setCurrentTitleIndex ] = useState(0)
+  const [ imagesOnCardCarousel, setImagesOnCardCarousel ] =  useState(0)
+  const currentImageProject = projects[imagesOnCardCarousel]
+  const currentImage = currentImageProject.images[0]
  
   function HandleToggleHeaderMenuModal() {
     setToggleHeaderMenuModal((prev) => !prev)
@@ -179,6 +193,86 @@ export default function Home() {
 
   }, [toggleHeaderMenuModal, toggleOptionsProjectMenu, toggleOptionsContactMenu])
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImagesOnCardCarousel(prev => 
+      (prev + 1) % projects.length
+      )
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    function generateARandomIndex() {
+      const result: number = Math.floor(Math.random() * projects.length)
+      return result
+    }
+
+    function changeRandomIndex() {
+      let nextIndex: number
+      do {
+        nextIndex = generateARandomIndex()
+      } while (nextIndex === currentTitleIndex)
+
+      setCurrentTitleIndex(nextIndex)
+    }
+
+    function animatedTitle() {
+      if (titleCarouselRef.current) {
+        gsap.fromTo(titleCarouselRef.current, {
+          text: '',
+        }, {
+          text: {
+            value: projects[currentTitleIndex].title,
+            delimiter: '',
+          },
+          duration: 2.5,
+          ease: 'power1.inOut',
+        })
+      }
+    }
+
+    animatedTitle()
+
+    const interval = setInterval(() => {
+      changeRandomIndex()
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [currentTitleIndex])
+
+  useEffect(() => {
+    let githubAnim: AnimationItem | null = null;
+    let instagramAnim: AnimationItem | null = null;
+
+    if(gitHubIconRef.current) {
+      githubAnim = lottie.loadAnimation({
+        container: gitHubIconRef.current,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/icons8-github.json'
+      })
+    }
+
+    if(instagramIconRef.current) {
+      instagramAnim = lottie.loadAnimation({
+        container: instagramIconRef.current,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/icons8-linkedin.json'
+      })
+    }
+
+    return () => {
+      githubAnim?.destroy();
+      instagramAnim?.destroy();
+    }
+
+  }, [])
+
   return (
     <div className='h-screen flex flex-col'>
       <div className="fixed inset-0 z-0 pointer-events-auto">
@@ -310,38 +404,123 @@ export default function Home() {
       )}
       </header>
 
-
       <div className='flex-1 flex flex-col overflow-y-auto px-8 z-10 pointer-events-none'>
 
-        <div className='h-24 border border-lime-300'>
-          <LocationTimeDisplay/>
+        <div className='h-24'>
+          <h2 className='text-3xl tracking-wider'>Hey...</h2>
+          <p className='ml-6'>That´s a fresh start to guiding you a ease navigation on this portfolio</p>
         </div>
 
-        <div className='flex-1 flex border border-emerald-200'>
-          <div className='w-[66%] h-full shrink-0 border border-pink-400'></div>
-
-          <div className='m-6 rounded-4xl border-2 pointer-events-auto'>
-            <div 
-              className='w-fit p-1 border-2 rounded-[50%] border-zinc-700 hover:border-zinc-300 transition-all duration-500 ease-in-out'
-            >
-              <Link
-                href='https://www.linkedin.com/in/kaiqueprado/'
-                target='_blank'
-              >
-                <Image
-                  src={'https://avatars.githubusercontent.com/kiqprado'}
-                  alt={`Pic profile of user`}
-                  width={56}
-                  height={56}
-                  className='rounded-[50%]'
-                />
-              </Link>
+        <div className='flex-1 flex'>
+          <div className='w-[66%] h-full shrink-0 pointer-events-auto'>
+            <div className='grid grid-cols-3 h-full w-full'>
               
+              <div className=''>
+                <div className='w-full h-[50%] relative overflow-hidden'>
+                  <AnimatePresence mode='wait'>
+                    <motion.img
+                      key={currentImageProject.slug}
+                      src={currentImage}
+                      alt={currentImageProject.title}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 1.5 }}
+                      className='absolute w-full h-full object-cover'
+                    />
+                  </AnimatePresence>
+                </div>
+                <div className='w-full h-[50%]'></div>
+              </div>
+
+              <div className=''>
+                <div className='w-full h-[50%]'></div>
+                <div className='w-full h-[50%] flex justify-center items-center'>
+                  <Link
+                    href={`/projects/${projects[currentTitleIndex].slug}`}
+                    className='text-2xl tracking-widest'
+                  >
+                    <span
+                      ref={titleCarouselRef}
+                    >
+                      {projects[currentTitleIndex].title}
+                      </span>
+                  </Link>
+                </div>
+              </div>
+              <div className=''>
+                <div className='w-full h-[50%] flex items-center gap-2'>
+                    <div
+                      ref={instagramIconRef}
+                      className='w-12 h-12'
+                    />
+                    <Link
+                      href='https://www.linkedin.com/in/kaiqueprado/'
+                      target='_blank'
+                      className=' px-3 rounded-sm hover:bg-blue-500/30 hover:border border-blue-100/30 transition-all duration-300 ease-in-out'
+                    >
+                      LinkedIn
+                    </Link>
+                    <div
+                      ref={gitHubIconRef}
+                      className='w-12 h-12'
+                    />  
+                    <Link
+                      href='https://github.com/kiqprado'
+                      target='_blank'
+                      className=' px-3 rounded-sm hover:bg-neutral-500/30 hover:border border-neutral-100/30 transition-all duration-300 ease-in-out'
+                    >
+                      GitHub
+                    </Link>
+                </div>
+                <div className='w-full h-[50]'></div>
+              </div>
             </div>
-            <div className='px-6 text-justify'>
+          </div>
+
+          <div className='px-6 flex flex-col justify-center gap-1.5 pointer-events-auto'>
+            <div className='flex gap-3'>
+              <div 
+                className='w-fit p-1 border-2 rounded-[50%] border-zinc-700 hover:border-zinc-300 transition-all duration-500 ease-in-out'
+              >
+                <Link
+                  href='https://www.linkedin.com/in/kaiqueprado/'
+                  target='_blank'
+                >
+                  <Image
+                    src={'https://avatars.githubusercontent.com/kiqprado'}
+                    alt={`Pic profile of user`}
+                    width={56}
+                    height={56}
+                    className='rounded-[50%]'
+                  />
+                </Link>    
+              </div>
+
+              <div className='flex-1 flex border-x-2 border-zinc-700 rounded-2xl transition-all duration-500 ease-in-out hover:border-zinc-300'>
+                <button className='m-auto cursor-pointer'>Go in...</button>
+              </div>
+            </div>
+         
+            <div className='px-6 py-3 border-x-2 border-zinc-700 rounded-4xl transition-all duration-500 ease-in-out hover:border-zinc-300 text-justify'>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem sunt vel quidem corrupti id ducimus earum laudantium laborum praesentium necessitatibus. Iusto, quos incidunt magnam sed delectus voluptate nobis quam labore!
-              Exercitationem architecto odit dolore blanditiis provident ad quos vel facere suscipit consequuntur dolorem necessitatibus earum ducimus sapiente inventore, maxime mollitia! Excepturi vitae praesentium possimus, dignissimos quidem odio voluptatum vel! Ipsum?
+              Exercitationem architecto odit dolore blanditiis provident ad quos vel facere suscipit consequuntur dolorem necessitatibus earum ducimus inventore, maxime mollitia! Excepturi vitae praesentium possimus, dignissimos quidem odio voluptatum vel! Ipsum?
             </div>
+            
+            <div className='flex gap-3'>
+              <div 
+                className='flex-1 flex border-x-2 border-zinc-700 rounded-2xl transition-all duration-500 ease-in-out hover:border-zinc-300'
+              > 
+                <button 
+                  className='w-full cursor-pointer hover:text-amber-300'
+                >
+                  Go on...
+                </button>
+              </div>
+                
+              <LocationTimeDisplay/>
+            </div>
+            
           </div>
           
         </div>

@@ -85,13 +85,13 @@ export function LocationTimeDisplay() {
       ) : (
         <div>
           <div>
-            <span className='font-bold text-sm tracking-widest'>&#47;&#47; Local Time: </span>
-            <span className='text-md tracking-widest'>{time}</span>
+            <span className='text-xs tracking-widest'>&#47;&#47; <strong>Local Time:</strong> </span>
+            <span className='text-sm tracking-wider'>{time}</span>
           </div>
           {latitude && longitude && (
             <div className='ml-2'>
-              <span className='font-bold text-sm tracking-widest'>&#47;&#47; Coordinates: </span>
-              <span className='text-md tracking-widest'>{latitude.toFixed(4)}, {longitude.toFixed(4)}</span>
+              <span className='text-xs tracking-widest'>&#47;&#47; <strong>Coordinates:</strong> </span>
+              <span className='text-sm tracking-wider'>{latitude.toFixed(4)}, {longitude.toFixed(4)}</span>
             </div>
           )}
         </div>

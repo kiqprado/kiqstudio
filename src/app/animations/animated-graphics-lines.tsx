@@ -100,7 +100,7 @@ export function AnimatedGraphicsLines() {
 
   return(
     <div className='h-full mx-6 mt-16 border-x border-zinc-900/30 relative'>
-      <div className='border-b border-zinc-900/30 h-26'/>
+      <div className='border-b border-zinc-900/20 h-26'/>
 
       <div className='absolute left-[-6] top-2'>
         <div
