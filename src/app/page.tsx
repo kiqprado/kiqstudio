@@ -38,7 +38,10 @@ export default function Home() {
   const titleCarouselRef = useRef<HTMLAnchorElement>(null)
 
   const gitHubIconRef = useRef<HTMLDivElement>(null)
-  const instagramIconRef = useRef<HTMLDivElement>(null)
+  const animationGitHubRef = useRef<AnimationItem | null>(null)
+  const linkedinIconRef = useRef<HTMLDivElement>(null)
+  const animationLinkedinRef = useRef<AnimationItem | null>(null)
+  
 
   const [ toggleHeaderMenuModal, setToggleHeaderMenuModal ] = useState(false)
   const [ toggleOptionsProjectMenu, setToggleOptionsProjectMenu ] = useState(false)
@@ -243,32 +246,29 @@ export default function Home() {
   }, [currentTitleIndex])
 
   useEffect(() => {
-    let githubAnim: AnimationItem | null = null;
-    let instagramAnim: AnimationItem | null = null;
-
     if(gitHubIconRef.current) {
-      githubAnim = lottie.loadAnimation({
+      animationGitHubRef.current = lottie.loadAnimation({
         container: gitHubIconRef.current,
         renderer: 'svg',
         loop: true,
-        autoplay: true,
+        autoplay: false,
         path: '/icons8-github.json'
       })
     }
 
-    if(instagramIconRef.current) {
-      instagramAnim = lottie.loadAnimation({
-        container: instagramIconRef.current,
+    if(linkedinIconRef.current) {
+      animationLinkedinRef.current = lottie.loadAnimation({
+        container: linkedinIconRef.current,
         renderer: 'svg',
         loop: true,
-        autoplay: true,
+        autoplay: false,
         path: '/icons8-linkedin.json'
       })
     }
 
-    return () => {
-      githubAnim?.destroy();
-      instagramAnim?.destroy();
+    return() => {
+      animationGitHubRef.current?.destroy()
+      animationLinkedinRef.current?.destroy()
     }
 
   }, [])
@@ -413,69 +413,79 @@ export default function Home() {
 
         <div className='flex-1 flex'>
           <div className='w-[66%] h-full shrink-0 pointer-events-auto'>
-            <div className='grid grid-cols-3 h-full w-full'>
-              
-              <div className=''>
-                <div className='w-full h-[50%] relative overflow-hidden'>
-                  <AnimatePresence mode='wait'>
-                    <motion.img
-                      key={currentImageProject.slug}
-                      src={currentImage}
-                      alt={currentImageProject.title}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 1.5 }}
-                      className='absolute w-full h-full object-cover'
-                    />
-                  </AnimatePresence>
-                </div>
-                <div className='w-full h-[50%]'></div>
+
+            <div className='grid grid-cols-3 grid-rows-2 h-full w-full'>
+
+              <div className='w-full col-start-1 col-span-2 row-start-1 relative flex items-center justify-center overflow-hidden'>
+                <AnimatePresence mode='wait'>
+                  <motion.img
+                    key={currentImageProject.slug}
+                    src={currentImage}
+                    alt={currentImageProject.title}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1.5 }}
+                    className='absolute object-cover'
+                  />
+                </AnimatePresence>
               </div>
 
-              <div className=''>
-                <div className='w-full h-[50%]'></div>
-                <div className='w-full h-[50%] flex justify-center items-center'>
-                  <Link
-                    href={`/projects/${projects[currentTitleIndex].slug}`}
-                    className='text-2xl tracking-widest'
+              <div className='w-full col-start-3 row-start-1 flex flex-col items-center justify-center gap-2'>
+                <div
+                  ref={linkedinIconRef}
+                  onMouseEnter={() => animationLinkedinRef.current?.play()}
+                  onMouseLeave={() => animationLinkedinRef.current?.stop()}
+                  className='w-12 h-12'
+                />
+
+                <Link
+                  href='https://www.linkedin.com/in/kaiqueprado/'
+                  target='_blank'
+                  className='px-3 rounded-sm border border-transparent hover:bg-blue-500/30 hover:border hover:border-blue-100/30 transition-all duration-300 ease-in-out'
+                >
+                  LinkedIn
+                </Link>
+
+                <div
+                  ref={gitHubIconRef}
+                  onMouseEnter={() => animationGitHubRef.current?.play()}
+                  onMouseLeave={() => animationGitHubRef.current?.pause()}
+                  className='w-12 h-12'
+                /> 
+
+                <Link
+                  href='https://github.com/kiqprado'
+                  target='_blank'
+                  className=' px-3 rounded-sm border border-transparent hover:bg-neutral-500/30 hover:border hover:border-neutral-100/30 transition-all duration-300 ease-in-out'
+                >
+                  GitHub
+                </Link>
+              </div>
+
+              <div className='w-full col-start-1 row-start-2 flex items-center justify-center'>
+                <span className='tracking-wider text-center'>Some highlights of the current projects</span>
+              </div>
+            
+              <div className='w-full col-start-2 row-start-2 flex justify-center items-center'>
+                <Link
+                  href={`/projects/${projects[currentTitleIndex].slug}`}
+                  className='text-2xl tracking-widest'
+                >
+                  <span
+                    ref={titleCarouselRef}
                   >
-                    <span
-                      ref={titleCarouselRef}
-                    >
-                      {projects[currentTitleIndex].title}
-                      </span>
-                  </Link>
-                </div>
+                    {projects[currentTitleIndex].title}
+                  </span>
+                </Link>
               </div>
-              <div className=''>
-                <div className='w-full h-[50%] flex items-center gap-2'>
-                    <div
-                      ref={instagramIconRef}
-                      className='w-12 h-12'
-                    />
-                    <Link
-                      href='https://www.linkedin.com/in/kaiqueprado/'
-                      target='_blank'
-                      className=' px-3 rounded-sm hover:bg-blue-500/30 hover:border border-blue-100/30 transition-all duration-300 ease-in-out'
-                    >
-                      LinkedIn
-                    </Link>
-                    <div
-                      ref={gitHubIconRef}
-                      className='w-12 h-12'
-                    />  
-                    <Link
-                      href='https://github.com/kiqprado'
-                      target='_blank'
-                      className=' px-3 rounded-sm hover:bg-neutral-500/30 hover:border border-neutral-100/30 transition-all duration-300 ease-in-out'
-                    >
-                      GitHub
-                    </Link>
-                </div>
-                <div className='w-full h-[50]'></div>
+ 
+              <div className='w-full col-start-3 row-start-2 flex items-center justify-center'>
+                <span className='tracking-wider text-center'>Find me on Socials</span>
               </div>
+              
             </div>
+
           </div>
 
           <div className='px-6 flex flex-col justify-center gap-1.5 pointer-events-auto'>
