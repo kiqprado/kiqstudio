@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
 import TextPlugin  from 'gsap'
 import lottie, { AnimationItem } from 'lottie-web'
+import {AnimatePresence, motion} from 'framer-motion'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -18,6 +19,11 @@ import { LocationAndTimeDisplay } from './components/location-and-time-display'
 gsap.registerPlugin(TextPlugin)
 
 export default function Home() {
+  // PROJECTS IMAGES CARDS
+  const [ currentImagesOnCarouselIndex, setCurrentImagesOnCarouselIndex ] = useState(0)
+  const currentImageProjectTemplate = projects[currentImagesOnCarouselIndex]
+  const ImageTemplate = currentImageProjectTemplate.images[0]
+
   // PROJECTS TITLE
   const projectsTitleCarouselRef = useRef<HTMLAnchorElement>(null)
   const [ currentProjectTitleIdex, setCurrentProjectTitleIndex ] = useState(0)
@@ -26,6 +32,15 @@ export default function Home() {
   const linkedinSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
   const githubSocialsContainerRef = useRef<HTMLDivElement>(null)
   const githubSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
+
+  // ANIMATION CARD CAROUSEL IMAGES PROJECTS
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImagesOnCarouselIndex(prev => (prev + 1) % projects.length)
+    }, 7000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   // ANIMATION LINKS TITLE PROJECTS
   useEffect(() => {
@@ -102,14 +117,19 @@ export default function Home() {
           <h2 className='text-3xl'>Hey...</h2>
           <p className='text-justify'>Down below, you’ll find quick drops of what I’ve been building — just a taste of the projects I’ve been cookin’ up lately.</p>
         </div>
-        <div className='flex flex-col items-center'>
-          <Image
-            src={'/projects/Focus_1-1.png'}
-            alt='Project Splash Screen'
-            width={356}
-            height={56}
-            className='rounded-md shadow-[2px_3px_12px_-2px_rgba(150,150,160,0.2),-1px_-1px_8px_0px_rgba(255,255,255,0.02)] hover:shadow-[4px_6px_20px_-4px_rgba(180,180,190,0.3),-2px_-2px_12px_0px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out'
-          />
+        <div className='flex flex-col items-center gap-3'>
+          <AnimatePresence mode='wait'>
+            <motion.img
+              key={currentImageProjectTemplate.slug}
+              src={ImageTemplate}
+              alt={currentImageProjectTemplate.title}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0}}
+              transition={{ duration: 3.5 }}
+              className='object-cover aspect-video rounded-md shadow-[2px_3px_12px_-2px_rgba(150,150,160,0.2),-1px_-1px_8px_0px_rgba(255,255,255,0.02)] hover:shadow-[4px_6px_20px_-4px_rgba(180,180,190,0.3),-2px_-2px_12px_0px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out'
+            />
+          </AnimatePresence>
           <p className='tracking-wider'>Some highlights of the current projects</p>
           <div>
             <Link 
