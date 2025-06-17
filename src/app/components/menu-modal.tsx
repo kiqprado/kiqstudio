@@ -60,10 +60,10 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
             </span>
             { toggleProjectsSubMenuModal && (
             <div className='flex flex-col gap-1.5 items-center justify-center'>
-              {projects.map((project, index) => (
+              {projects.map((project) => (
                 <Link
-                  key={index}
-                  href={'#'}
+                  key={project.id}
+                  href={`/projects/${project.slug}`}
                 >
                   {project.title}
                 </Link>
@@ -99,10 +99,10 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
             </span>
             {toggleContactsSubMenuModal && (
               <div className='flex flex-col gap-1.5 items-center justify-center'>
-                {contacts.map((contact, index) => (
+                {contacts.map((contact) => (
                   <Link
-                    key={index}
-                    href={'#'}
+                    key={contact.id}
+                    href={`/contacts/${contact.slug}`}
                   >
                     {contact.title}
                   </Link>
