@@ -1,5 +1,10 @@
 'use client'
 
+import { useRef, useEffect } from 'react'
+
+import gsap from 'gsap'
+import { TextPlugin } from 'gsap/TextPlugin'
+
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -19,6 +24,8 @@ interface IProjectClientModel {
 }
 
 export function ProjectClientModel({ prevProject, project, nextProject}: IProjectClientModel) {
+  const projectTitleTextRef = useRef(null)
+  const projectDescriptionTextRef = useRef(null)
 
   //Query's
   const isMobileSM = useMediaRange('mobileSM')
@@ -29,6 +36,34 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
   
   const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
   const tabletRangeFull = isTabletMD || isTabletLG
+
+  gsap.registerPlugin(TextPlugin)
+  useEffect(() => {
+    if(!project) return
+
+    // INITIAL EFFECTS SCALE
+    if(projectTitleTextRef.current) {
+      gsap.fromTo(projectTitleTextRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 0.7,
+        delay: 0.3,
+        ease: 'power1.in'
+      })
+    }
+
+    if(projectDescriptionTextRef.current) {
+      gsap.fromTo(projectDescriptionTextRef.current, {
+        text: ' '
+      }, {
+        text: { value: project.description },
+        duration: 11,
+        delay: 0.9,
+        ease: 'none'
+      })
+    }
+  }, [project?.description])
 
   if(!project) {
     return (
@@ -42,46 +77,55 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
 
   return (
     <div className='w-full'>
-      <div className='flex items-center justify-center gap-3 py-2.5 px-3'>
+      <div className={`w-full max-w-4xl fixed ${mobileRangeFull ? 'top-3' : 'top-5'} left-1/2 -translate-x-1/2 z-10 flex items-center justify-center gap-3 px-3`}>
         <ButtonLink 
-        href={`/projects/${prevProject.slug}`}
-        className='flex items-center gap-1.5'     
-      >
-        <ArrowBigLeft/>
-        <span className={ mobileRangeFull ? 'hidden' : ''}> Prev </span>
-      </ButtonLink>
-      <ProjectTitleNavBar> 
-        {project.slug}
-      </ProjectTitleNavBar>
-      <ButtonLink 
-        href={`/projects/${nextProject.slug}`}
-        className='flex items-center gap-1.5'
-      >
-        <span className={ mobileRangeFull ? 'hidden' : ''}> Next </span>
-        <ArrowBigRight/>
-      </ButtonLink>
+          href={`/projects/${prevProject.slug}`}    
+        >
+          <ArrowBigLeft/>
+          <span className={ mobileRangeFull ? 'hidden' : ''}>Previous</span>
+        </ButtonLink>
+        <ProjectTitleNavBar> 
+          {project.slug}
+        </ProjectTitleNavBar>
+        <ButtonLink 
+          href={`/projects/${nextProject.slug}`}
+        >
+          <span className={ mobileRangeFull ? 'hidden' : ''}>Next</span>
+          <ArrowBigRight/>
+        </ButtonLink>
       </div>
       
-      <div className=' h-svh flex flex-col items-center'>
-        <h1 className={`tracking-widest font-bold text-6xl my-36`}>
+      <div className='h-svh relative flex flex-col items-center justify-center'>
+        <h1 
+          ref={projectTitleTextRef}
+          className={`tracking-widest font-bold text-6xl`}>
           {project.title}
         </h1>
-        <p className='px-3 text-justify'>{project.description}</p>
+        <p 
+          ref={projectDescriptionTextRef}
+          className={`absolute ${mobileRangeFull || tabletRangeFull ? 'top-136' : 'top-124'} px-3 text-justify max-w-4xl`}
+        >
+          {project.description}
+        </p>
       </div>
 
-      <div>
+      <div className='flex flex-col items-center gap-3'>
         {project.images.map((image, index) => (
           <Image
             key={index}
             src={image}
             alt={`Image of ${project.title}`}
-            width={256}
+            width={356}
             height={52}
+            className='rounded-md'
           />
         ))}
       </div>
-
-      <Link href={'/'}>Home</Link>
+      
+      <div className='flex justify-center my-26'>
+        <Link href={'/'}>Home</Link>
+      </div>
+      
     </div>
   )
 }

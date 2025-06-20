@@ -13,17 +13,21 @@ import Link from 'next/link'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
 
+import { useMediaRange } from './utils/breakpoints-hook'
+
 import { projects } from './portfolio-data/data'
 import { LocationAndTimeDisplay } from './components/location-and-time-display'
 
 gsap.registerPlugin(TextPlugin)
 
 export default function Home() {
+  //SHORT PORTFOLIO PRESENTATION
+  const titlePresentationRef = useRef(null)
+  const descriptionPresentationRef = useRef(null)
   // PROJECTS IMAGES CARDS
   const [ currentImagesOnCarouselIndex, setCurrentImagesOnCarouselIndex ] = useState(0)
   const currentImageProjectTemplate = projects[currentImagesOnCarouselIndex]
   const ImageTemplate = currentImageProjectTemplate.images[0]
-
   // PROJECTS TITLE
   const projectsTitleCarouselRef = useRef<HTMLAnchorElement>(null)
   const [ currentProjectTitleIdex, setCurrentProjectTitleIndex ] = useState(0)
@@ -32,6 +36,29 @@ export default function Home() {
   const linkedinSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
   const githubSocialsContainerRef = useRef<HTMLDivElement>(null)
   const githubSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
+
+  //Query's
+  const isMobileSM = useMediaRange('mobileSM')
+  const isMobileMD = useMediaRange('mobileMD')
+  const isMobileLG = useMediaRange('mobileLG')
+  const isTabletMD = useMediaRange('tabletMD')
+  const isTabletLG = useMediaRange('tabletLG')
+  
+  const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
+  const tabletRangeFull = isTabletMD || isTabletLG
+
+  // ANIMATION PORTFOLIO SHORT PRESENTATION
+  useEffect(() => {
+    if(titlePresentationRef.current) {
+      gsap.fromTo(titlePresentationRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 1.5,
+        ease: 'power2.inOut'
+      })
+    }
+  }, [])
 
   // ANIMATION CARD CAROUSEL IMAGES PROJECTS
   useEffect(() => {
@@ -112,10 +139,15 @@ export default function Home() {
   return (
     <div className='h-svh flex flex-col items-center'>
       <Header/>
-      <main className='px-3 py-1.5 flex-1 flex flex-col items-center gap-3 overflow-y-auto'>
-        <div>
-          <h2 className='text-3xl'>Hey...</h2>
-          <p className='text-justify'>Down below, you’ll find quick drops of what I’ve been building — just a taste of the projects I’ve been cookin’ up lately.</p>
+      <main className='px-3 py-1.5 flex-1 flex flex-col items-center gap-5 overflow-y-auto'>
+        <div className='py-15 space-y-3'>
+          <h2 
+            ref={titlePresentationRef}
+            className='text-3xl'
+          >
+            Hey...
+          </h2>
+          <p className={`text-justify ${mobileRangeFull ? 'text-lg':'text-md'}`}>Down below, you’ll find quick drops of what I’ve been building — just a taste of the projects I’ve been cookin’ up lately.</p>
         </div>
         <div className='flex flex-col items-center gap-3'>
           <AnimatePresence mode='wait'>
@@ -133,7 +165,7 @@ export default function Home() {
           <p className='tracking-wider'>Some highlights of the current projects</p>
           <div>
             <Link 
-              href={'#'}
+              href={`/projects/${projects[currentProjectTitleIdex].slug}`}
             >
               <span
                 ref={projectsTitleCarouselRef}
