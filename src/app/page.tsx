@@ -232,9 +232,20 @@ export default function Home() {
               Let’s build together
             </Link>
           </div>
-          <p className='text-justify'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut doloremque, nostrum, quasi molestias corporis voluptatum non sapiente officia hic fugiat maiores amet vel provident officiis, quidem quam ullam unde? Laudantium.
-          Consequatur dicta neque explicabo dolorum. Laboriosam et cum, qui aspernatur amet similique fugiat numquam saepe rem est excepturi aut delectus temporibus nihil nesciunt molestias voluptate iste ex. Molestiae, omnis atque.
-          Corporis eos, libero quam a debitis corrupti suscipit reiciendis ex neque similique culpa, excepturi voluptatem fuga! Illo, iusto, atque tempora aspernatur libero odit nisi fugit itaque commodi, placeat veritatis voluptates.</p>
+          <p className='text-justify'>Hey there! I’m a passionate Frontend & Fullstack Developer with a strong focus on creating high-performance, secure, and scalable web applications. Whether it's SPAs, Landing Pages, E-Commerce Stores, or Client-Side Routing, I craft seamless digital experiences with clean, efficient code.
+
+On the backend, I build structured databases in Node.js, ensuring security and reliability through modern auth practices like JWT, Zod, bcrypt, OAuth, and middleware validation. On the frontend, I primarily work with Next.js (React) but also have experience with Vue & Angular, delivering fast, SEO-friendly, and dynamic interfaces.
+
+My styling toolkit includes Tailwind CSS (my go-to), along with Sass and Bootstrap, ensuring pixel-perfect designs with maintainable code.
+
+I believe in collaboration, innovation, and robust solutions—let’s build something amazing together!</p>
+          {/*<p>Olá! Sou um Desenvolvedor Frontend & Fullstack apaixonado por criar aplicações web performáticas, seguras e escaláveis. Seja SPAs, Landing Pages, Lojas Virtuais ou Roteamento Client-Side, desenvolvo experiências digitais fluidas com código limpo e eficiente.
+
+No backend, construo bancos de dados estruturados em Node.js, garantindo segurança e confiabilidade com práticas modernas como JWT, Zod, bcrypt, OAuth e validação via middlewares. No frontend, trabalho principalmente com Next.js (React), mas também tenho experiência com Vue e Angular, entregando interfaces rápidas, dinâmicas e otimizadas para SEO.
+
+Minha stack de estilização inclui Tailwind CSS (meu preferido), além de Sass e Bootstrap, assegurando designs precisos com código sustentável.
+
+Acredito em colaboração, inovação e soluções robustas—vamos construir algo incrível juntos!</p> */}
           <div className='flex gap-1.5 items-center'>
             <span>Location 📍</span>
             <LocationAndTimeDisplay/>

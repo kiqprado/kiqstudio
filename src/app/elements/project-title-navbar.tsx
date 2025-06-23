@@ -5,7 +5,7 @@ interface IProjectTitleNavBar {
   ref?: RefObject<HTMLDivElement> | null
 }
 
-export function ProjectTitleNavBar({children, ref}: IProjectTitleNavBar) {
+export function ProjectTitleNavBarSection({children, ref}: IProjectTitleNavBar) {
   return(
     <div className='relative flex-1 text-center border rounded-md border-zinc-600/75 bg-zinc-800/25'>
       <p className='font-medium text-lg'>{children}</p>
