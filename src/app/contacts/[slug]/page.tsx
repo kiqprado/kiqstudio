@@ -20,9 +20,9 @@ export default function Contacts({ params }: IContacts) {
 
   return (
     <ContactClientModel
-      prevProject={prevContact}
+      prevContact={prevContact}
       contact={contact}
-      nextProject={nextContact}
+      nextContact={nextContact}
     />
   )
 }

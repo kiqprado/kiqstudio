@@ -1,11 +1,11 @@
 import { ReactNode, RefObject } from 'react'
 
-interface IProjectTitleNavBar {
+interface INavBarSectionTitle {
   children: ReactNode
   ref?: RefObject<HTMLDivElement> | null
 }
 
-export function ProjectTitleNavBarSection({children, ref}: IProjectTitleNavBar) {
+export function NavBarSectionTitle({children, ref}: INavBarSectionTitle) {
   return(
     <div className='relative flex-1 text-center border rounded-md border-zinc-600/75 bg-zinc-800/25'>
       <p className='font-medium text-lg'>{children}</p>
