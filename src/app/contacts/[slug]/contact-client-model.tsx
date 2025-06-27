@@ -7,6 +7,8 @@ import { useMediaRange } from '@/app/utils/breakpoints-hook'
 import { ButtonLink } from '@/app/elements/button-link'
 import { NavBarSectionTitle } from '@/app/elements/project-title-navbar'
 
+import { PageNotFound } from '@/app/error/page-not-found'
+
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 
 interface IContactClientModel {
@@ -29,16 +31,14 @@ export function ContactClientModel({ prevContact, contact, nextContact}: IContac
 
   if(!contact) {
     return (
-      <div className='fixed inset-0 bg-zinc-950/50 flex'>
-        <div className='m-auto px-6 py-3 flex items-center justify-center'>
-          <span className='font-medium text-xl'>Contact unavailable</span>
-        </div>
-      </div>
+      <PageNotFound>
+        Contact unavailable
+      </PageNotFound>
     )
   }
 
   return (
-    <div>
+    <div className='h-svh flex'>
       <div 
         className={`w-full max-w-4xl fixed ${mobileRangeFull ? 'top-3' : 'top-5'} left-1/2 -translate-x-1/2 z-10 flex items-center justify-center gap-3 px-3`}>
         <ButtonLink 
@@ -55,6 +55,18 @@ export function ContactClientModel({ prevContact, contact, nextContact}: IContac
           <ArrowBigRight/>
         </ButtonLink>
       </div>
+
+      <div
+        className='m-auto'
+      >
+        <ButtonLink
+          href={'/'}
+        >
+          Home
+        </ButtonLink>
+      </div>
+      
+
     </div>
   )
 }

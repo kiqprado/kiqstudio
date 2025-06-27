@@ -16,6 +16,7 @@ import { ButtonLink } from '@/app/elements/button-link'
 import { NavBarSectionTitle } from '@/app/elements/project-title-navbar'
 
 import { useMediaRange } from '@/app/utils/breakpoints-hook'
+import { PageNotFound } from '@/app/error/page-not-found'
 
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 
@@ -196,11 +197,9 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
 
   if(!project) {
     return (
-      <div className='fixed inset-0 bg-zinc-950/50 flex'>
-        <div className='m-auto px-6 py-3 flex items-center justify-center'>
-          <span className='font-medium text-xl'>Projeto não encontrado</span>
-        </div>
-      </div>
+      <PageNotFound>
+        Projeto não encontrado
+      </PageNotFound>
     )
   }
 

@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { MainMenuModal } from './menu-modal'
 
-import { Button } from '../elements/button'
+import { ButtonIcon } from '../elements/button-icon'
 import { Logo } from '../elements/logo'
 
 import { Menu } from 'lucide-react'
@@ -23,12 +23,12 @@ export function Header() {
         isMobileRange={true}
       />
       <div className='w-full flex flex-col'>
-        <Button
+        <ButtonIcon
           onClick={HandleOpeningMenu}
-          className='self-end'
+          align='end'
         >
           <Menu/>
-        </Button>
+        </ButtonIcon>
         <div className='h-0.5 bg-zinc-900'/>
       </div>
 

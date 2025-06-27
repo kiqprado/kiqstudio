@@ -3,24 +3,36 @@
 import { useRef, useEffect, useState } from 'react'
 
 import gsap from 'gsap'
-import TextPlugin  from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+import TextPlugin  from 'gsap/TextPlugin'
 import lottie, { AnimationItem } from 'lottie-web'
 import {AnimatePresence, motion} from 'framer-motion'
 
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { useMediaRange } from './utils/breakpoints-hook'
+import { projects } from './portfolio-data/data'
+
 import { Header } from './components/header'
 import { Footer } from './components/footer'
-
-import { useMediaRange } from './utils/breakpoints-hook'
-
-import { projects } from './portfolio-data/data'
 import { LocationAndTimeDisplay } from './components/location-and-time-display'
 
-gsap.registerPlugin(TextPlugin)
+import { Button } from './elements/button'
+
+import { ChevronsDown, ArrowDown } from 'lucide-react'
+
+gsap.registerPlugin(TextPlugin, ScrollTrigger)
 
 export default function Home() {
+  // SCROLL REVEAL REF
+  const mainContainerRef = useRef(null)
+  const introMainDescriptionSectionRef = useRef<HTMLDivElement>(null)
+  const projectPresentationDetailsRef = useRef<HTMLDivElement>(null)
+  const socialsMediaConnectionsRef = useRef<HTMLDivElement>(null)
+  const shortSelfPresentationRef = useRef<HTMLDivElement>(null)
+  const userLocationSettingRef = useRef<HTMLDivElement>(null)
+
   //SHORT PORTFOLIO PRESENTATION
   const titlePresentationRef = useRef(null)
   const descriptionPresentationRef = useRef(null)
@@ -47,6 +59,13 @@ export default function Home() {
   const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
   const tabletRangeFull = isTabletMD || isTabletLG
 
+  function HandleScrollToProjectsView() {
+    projectPresentationDetailsRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
+  }
+
   // ANIMATION PORTFOLIO SHORT PRESENTATION
   useEffect(() => {
     if(titlePresentationRef.current) {
@@ -54,11 +73,25 @@ export default function Home() {
         opacity: 0
       }, {
         opacity: 1,
-        duration: 1.5,
-        ease: 'power2.inOut'
+        delay: 0.3,
+        duration: 1,
+        ease: 'power2.inOut',
       })
     }
-  }, [])
+
+    if(descriptionPresentationRef.current) {
+      gsap.fromTo(descriptionPresentationRef.current, {
+        text: ' ',
+        opacity: 0
+      }, {
+        text: { value: introDescription},
+        opacity: 1,
+        delay: 0.5,
+        duration: 2,
+        ease: 'power1.inOut'
+      })
+    }
+  }, [titlePresentationRef, descriptionPresentationRef])
 
   // ANIMATION CARD CAROUSEL IMAGES PROJECTS
   useEffect(() => {
@@ -87,12 +120,14 @@ export default function Home() {
     function AnimatedProjectsTitleTransition() {
      if(projectsTitleCarouselRef.current) {
       gsap.fromTo(projectsTitleCarouselRef.current, {
-        text: ''
+        text: '______',
+        opacity: 0
       }, {
         text: {
           value: projects[currentProjectTitleIdex].title,
           delimiter: '',
         },
+        opacity: 1,
         duration: 2.5,
         ease: 'power1.inOut'
       })
@@ -135,82 +170,135 @@ export default function Home() {
       githubSocialsAnimationIconRef.current?.destroy()
     }
   }, [])
+
+    // DATA INTRO CONST´S
+    const introDescription: string = 'Down below, you’ll find quick drops of what I’ve been building — just a taste of the projects I’ve been cookin’ up lately.'
   
   return (
     <div className='h-svh flex flex-col items-center'>
       <Header/>
-      <main className='px-3 py-1.5 flex-1 flex flex-col items-center gap-5 overflow-y-auto'>
-        <div className='py-15 space-y-3'>
+      <main 
+        ref={mainContainerRef}
+        className={`flex-1 ${mobileRangeFull || tabletRangeFull ? 'px-3': 'px-9'} flex flex-col items-center gap-5 overflow-y-auto`}
+      >
+        <div 
+          ref={introMainDescriptionSectionRef}
+          className='min-h-full min-w-full relative flex flex-col gap-6 justify-center'>
           <h2 
             ref={titlePresentationRef}
-            className='text-3xl'
+            className={`${mobileRangeFull ? 'text-4xl tracking-wider' : 'text-3xl'}`}
           >
             Hey...
           </h2>
-          <p className={`text-justify ${mobileRangeFull ? 'text-lg':'text-md'}`}>Down below, you’ll find quick drops of what I’ve been building — just a taste of the projects I’ve been cookin’ up lately.</p>
-        </div>
-        <div className='flex flex-col items-center gap-3'>
-          <AnimatePresence mode='wait'>
-            <motion.img
-              key={currentImageProjectTemplate.slug}
-              src={ImageTemplate}
-              alt={currentImageProjectTemplate.title}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0}}
-              transition={{ duration: 3.5 }}
-              className='object-cover aspect-video rounded-md shadow-[2px_3px_12px_-2px_rgba(150,150,160,0.2),-1px_-1px_8px_0px_rgba(255,255,255,0.02)] hover:shadow-[4px_6px_20px_-4px_rgba(180,180,190,0.3),-2px_-2px_12px_0px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out'
-            />
-          </AnimatePresence>
-          <p className='tracking-wider'>Some highlights of the current projects</p>
-          <div>
-            <Link 
-              href={`/projects/${projects[currentProjectTitleIdex].slug}`}
-            >
-              <span
-                ref={projectsTitleCarouselRef}
-                className='text-lg tracking-widest'
-              >
-                {projects[currentProjectTitleIdex].title}
-              </span>
-            </Link>
-          </div>
-          <p>Find me on Socials</p>
+          <p 
 
-          <div className='flex items-center'>
-            <div className='flex flex-col items-center'>
-              <div
-                ref={linkedinSocialsContainerRef}
-                onMouseEnter={() => linkedinSocialsAnimationIconRef.current?.play()}
-                onMouseLeave={() => linkedinSocialsAnimationIconRef.current?.stop()}
-                className='w-10 h-10'
+            ref={descriptionPresentationRef}
+            className={`text-justify ${mobileRangeFull ? 'text-lg min-h-24':'text-md'}`}
+          >
+            {introDescription}
+          </p>
+
+          <div className='absolute bottom-2 left-1/2 -translate-x-1/2 w-full flex items-center justify-center'>
+            <Button
+              onClick={HandleScrollToProjectsView}
+              size='fit'
+            >
+              Come to see it 
+              <ChevronsDown 
+                className='size-5'
               />
-              <Link
-                href='https://www.linkedin.com/in/kaiqueprado/'
-                target='_blank'
-                className='px-3 rounded-sm border border-transparent hover:bg-blue-500/30 hover:border hover:border-blue-100/30 transition-all duration-300 ease-in-out'
-              >
-                LinkedIn
-              </Link>
-            </div>
-            <div className='flex flex-col items-center'>
-              <div
-                ref={githubSocialsContainerRef}
-                onMouseEnter={() => githubSocialsAnimationIconRef.current?.play()}
-                onMouseLeave={() => githubSocialsAnimationIconRef.current?.pause()}
-                className='w-10 h-10'
+          </Button>
+          </div>
+        </div>
+
+        <div className='min-h-full'>
+          <div 
+            ref={projectPresentationDetailsRef}
+            className='py-3 flex flex-col items-center space-y-6 text-center'
+          >
+            <AnimatePresence mode='wait'>
+              <motion.img
+                key={currentImageProjectTemplate.slug}
+                src={ImageTemplate}
+                alt={currentImageProjectTemplate.title}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0}}
+                transition={{ duration: 3.5 }}
+                className='object-cover aspect-video rounded-md shadow-[2px_3px_12px_-2px_rgba(150,150,160,0.2),-1px_-1px_8px_0px_rgba(255,255,255,0.02)] hover:shadow-[4px_6px_20px_-4px_rgba(180,180,190,0.3),-2px_-2px_12px_0px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out'
               />
-              <Link
-                href='https://github.com/kiqprado'
-                target='_blank'
-                className=' px-3 rounded-sm border border-transparent hover:bg-neutral-500/30 hover:border hover:border-neutral-100/30 transition-all duration-300 ease-in-out'
+            </AnimatePresence>
+            <p className='tracking-wider'>Some highlights of the current projects</p>
+            <span className='flex gap-3 items-center'>
+              Don’t miss out! See the full details 
+              <ArrowDown 
+                className='size-5 hover:text-sky-600 transition-colors duration-300 ease-in'
+              />
+            </span>
+            <div>
+              <Link 
+                href={`/projects/${projects[currentProjectTitleIdex].slug}`}
+                className='cursor-pointer hover:text-red-600 transition-colors duration-300 ease-in'
               >
-                GitHub
+                <span
+                  ref={projectsTitleCarouselRef}
+                  className='text-lg tracking-widest'
+                >
+                  {projects[currentProjectTitleIdex].title}
+                </span>
               </Link>
             </div>
           </div>
+
+          <div 
+            ref={socialsMediaConnectionsRef}
+            className='flex flex-col items-center gap-3'
+          >
+            <span className='text-lg'>Find me on Socials</span>
+
+            <div className='flex items-center'>
+              <div className='flex flex-col items-center'>
+                <div
+                  ref={linkedinSocialsContainerRef}
+                  onMouseEnter={() => linkedinSocialsAnimationIconRef.current?.play()}
+                  onMouseLeave={() => linkedinSocialsAnimationIconRef.current?.stop()}
+                  className='w-12 h-12'
+                />
+                <Link
+                  href='https://www.linkedin.com/in/kaiqueprado/'
+                  target='_blank'
+                  className='px-3 text-lg rounded-sm border border-transparent hover:bg-blue-500/30 hover:border hover:border-blue-100/30 transition-all duration-300 ease-in-out'
+                >
+                  LinkedIn
+                </Link>
+              </div>
+              <div className='flex flex-col items-center'>
+                <div
+                  ref={githubSocialsContainerRef}
+                  onMouseEnter={() => githubSocialsAnimationIconRef.current?.play()}
+                  onMouseLeave={() => githubSocialsAnimationIconRef.current?.pause()}
+                  className='w-12 h-12'
+                />
+                <Link
+                  href='https://github.com/kiqprado'
+                  target='_blank'
+                  className='px-3 text-lg rounded-sm border border-transparent hover:bg-neutral-500/30 hover:border hover:border-neutral-100/30 transition-all duration-300 ease-in-out'
+                >
+                  GitHub
+                </Link>
+              </div>
+            </div>
+
+            <div className='flex flex-col gap-3 items-center'>
+              <span>Send me a message</span>
+              <button>Email</button>
+            </div>
+          </div>
         </div>
-        <div className='space-y-3'>
+
+        <div 
+          ref={shortSelfPresentationRef}
+          className='min-h-full space-y-3'>
           <div className='flex items-center gap-3'>
             <Link
               href={'https://www.linkedin.com/in/kaiqueprado/'}
@@ -246,12 +334,15 @@ No backend, construo bancos de dados estruturados em Node.js, garantindo seguran
 Minha stack de estilização inclui Tailwind CSS (meu preferido), além de Sass e Bootstrap, assegurando designs precisos com código sustentável.
 
 Acredito em colaboração, inovação e soluções robustas—vamos construir algo incrível juntos!</p> */}
-          <div className='flex gap-1.5 items-center'>
-            <span>Location 📍</span>
-            <LocationAndTimeDisplay/>
-          </div>
         </div>
-          
+
+        <div 
+          ref={userLocationSettingRef}
+          className='flex gap-1.5 items-center mb-16'
+        >
+          <span>Location 📍</span>
+          <LocationAndTimeDisplay/>
+        </div>    
       </main>
       <Footer/>
     </div>

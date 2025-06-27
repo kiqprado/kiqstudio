@@ -4,8 +4,6 @@ import Link from 'next/link'
 
 import { projects, contacts } from '../portfolio-data/data'
 
-import { Button } from '../elements/button'
-
 import { X } from 'lucide-react'
 
 interface IMainMenuModal {
@@ -47,12 +45,12 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
             ref={projectsSubMenuRef}
             className='relative'
           >
-            <Button
+            <button
               onClick={HandleToggleProjectsSubMenuModal}
               className='text-lg tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out'
             >
               [ The Work ]
-            </Button>
+            </button>
             <span
               className='absolute top-2.5 text-sm font-bold text-red-500'
             >
@@ -73,11 +71,11 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
           </div>
           
           <div className='relative'>
-            <Button
+            <button
               className='text-lg tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out'
             >
               [ Behind the Pixels ]
-            </Button>
+            </button>
             <span
               className='absolute top-2.5 text-sm font-bold text-red-500'
             >
@@ -86,12 +84,12 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
           </div>
 
           <div className='relative'>
-            <Button
+            <button
               onClick={HandleToggleContactsSubMenuModal}
               className='text-lg tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out'
             >
               [ Let´s talk ]
-            </Button>
+            </button>
             <span
               className='absolute top-2.5 text-sm font-bold text-red-500'
             >
