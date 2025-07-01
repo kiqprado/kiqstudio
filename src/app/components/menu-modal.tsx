@@ -4,6 +4,8 @@ import Link from 'next/link'
 
 import { projects, contacts } from '../portfolio-data/data'
 
+import { useMediaRange } from '../utils/breakpoints-hook'
+
 import { X } from 'lucide-react'
 
 interface IMainMenuModal {
@@ -15,6 +17,16 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
   const [ toggleContactsSubMenuModal, setToggleContactsSubMenuModal ] = useState(false)
 
   const projectsSubMenuRef = useRef<HTMLDivElement>(null)
+
+  //Query's
+    const isMobileSM = useMediaRange('mobileSM')
+    const isMobileMD = useMediaRange('mobileMD')
+    const isMobileLG = useMediaRange('mobileLG')
+    const isTabletMD = useMediaRange('tabletMD')
+    const isTabletLG = useMediaRange('tabletLG')
+    
+    const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
+    const tabletRangeFull = isTabletMD || isTabletLG
 
   function HandleToggleProjectsSubMenuModal() {
     setToggleProjectsSubMenuModal(prev => !prev)
@@ -47,7 +59,8 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
           >
             <button
               onClick={HandleToggleProjectsSubMenuModal}
-              className='text-lg tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out'
+              className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-lg'} 
+                tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out`}
             >
               [ The Work ]
             </button>
@@ -62,6 +75,7 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
                 <Link
                   key={project.id}
                   href={`/projects/${project.slug}`}
+                  className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'}`}
                 >
                   {project.title}
                 </Link>
@@ -72,7 +86,8 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
           
           <div className='relative'>
             <button
-              className='text-lg tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out'
+              className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-lg'} 
+                tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out`}
             >
               [ Behind the Pixels ]
             </button>
@@ -86,7 +101,8 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
           <div className='relative'>
             <button
               onClick={HandleToggleContactsSubMenuModal}
-              className='text-lg tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out'
+              className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-lg'} 
+                tracking-widest font-bold hover:text-sky-500 transition-all duration-300 ease-in-out`}
             >
               [ Let´s talk ]
             </button>
@@ -101,6 +117,7 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
                   <Link
                     key={contact.id}
                     href={`/contacts/${contact.slug}`}
+                    className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'}`}
                   >
                     {contact.title}
                   </Link>

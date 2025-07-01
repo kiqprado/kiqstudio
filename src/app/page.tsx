@@ -16,7 +16,6 @@ import { projects } from './portfolio-data/data'
 
 import { Header } from './components/header'
 import { Footer } from './components/footer'
-import { LocationAndTimeDisplay } from './components/location-and-time-display'
 
 import { Button } from './elements/button'
 
@@ -31,7 +30,6 @@ export default function Home() {
   const projectPresentationDetailsRef = useRef<HTMLDivElement>(null)
   const socialsMediaConnectionsRef = useRef<HTMLDivElement>(null)
   const shortSelfPresentationRef = useRef<HTMLDivElement>(null)
-  const userLocationSettingRef = useRef<HTMLDivElement>(null)
 
   //SHORT PORTFOLIO PRESENTATION
   const titlePresentationRef = useRef(null)
@@ -48,6 +46,10 @@ export default function Home() {
   const linkedinSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
   const githubSocialsContainerRef = useRef<HTMLDivElement>(null)
   const githubSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
+  const discordSocialsContainerRef = useRef<HTMLDivElement>(null)
+  const discordSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
+  const mailSocialsContainerRef = useRef<HTMLDivElement>(null)
+  const mailsSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
 
   //Query's
   const isMobileSM = useMediaRange('mobileSM')
@@ -165,9 +167,31 @@ export default function Home() {
       })
     }
 
+    if(discordSocialsContainerRef.current) {
+      discordSocialsAnimationIconRef.current = lottie.loadAnimation({
+        container: discordSocialsContainerRef.current,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: '/icons8-discord.json'
+      })
+    }
+
+    if(mailSocialsContainerRef.current) {
+      mailsSocialsAnimationIconRef.current = lottie.loadAnimation({
+        container: mailSocialsContainerRef.current,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: '/mail-icon.json'
+      })
+    }
+
     return() => {
       linkedinSocialsAnimationIconRef.current?.destroy()
       githubSocialsAnimationIconRef.current?.destroy()
+      discordSocialsAnimationIconRef.current?.destroy()
+      mailsSocialsAnimationIconRef.current?.destroy()
     }
   }, [])
 
@@ -203,103 +227,64 @@ export default function Home() {
               onClick={HandleScrollToProjectsView}
               size='fit'
             >
-              Come to see it 
+              <span className={`${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'}`}>Come to see it</span> 
               <ChevronsDown 
-                className='size-5'
+                className={`${mobileRangeFull || tabletRangeFull ? 'size-6' : 'size-5'}`}
               />
           </Button>
           </div>
         </div>
 
-        <div className='min-h-full'>
-          <div 
-            ref={projectPresentationDetailsRef}
-            className='py-3 flex flex-col items-center space-y-6 text-center'
+        <div 
+          ref={projectPresentationDetailsRef}
+          className={`py-3 flex flex-col items-center space-y-6 text-center 
+            ${mobileRangeFull || tabletRangeFull ? 'min-h-full' : ''}`}
+        >
+          <AnimatePresence mode='wait'>
+            <motion.img
+              key={currentImageProjectTemplate.slug}
+              src={ImageTemplate}
+              alt={currentImageProjectTemplate.title}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0}}
+              transition={{ duration: 3.5 }}
+              className='object-cover aspect-video rounded-md shadow-[2px_3px_12px_-2px_rgba(150,150,160,0.2),-1px_-1px_8px_0px_rgba(255,255,255,0.02)] hover:shadow-[4px_6px_20px_-4px_rgba(180,180,190,0.3),-2px_-2px_12px_0px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out'
+              />
+          </AnimatePresence>
+          <p 
+            className={`tracking-widest ${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'}`}
           >
-            <AnimatePresence mode='wait'>
-              <motion.img
-                key={currentImageProjectTemplate.slug}
-                src={ImageTemplate}
-                alt={currentImageProjectTemplate.title}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0}}
-                transition={{ duration: 3.5 }}
-                className='object-cover aspect-video rounded-md shadow-[2px_3px_12px_-2px_rgba(150,150,160,0.2),-1px_-1px_8px_0px_rgba(255,255,255,0.02)] hover:shadow-[4px_6px_20px_-4px_rgba(180,180,190,0.3),-2px_-2px_12px_0px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out'
-              />
-            </AnimatePresence>
-            <p className='tracking-wider'>Some highlights of the current projects</p>
-            <span className='flex gap-3 items-center'>
-              Don’t miss out! See the full details 
-              <ArrowDown 
-                className='size-5 hover:text-sky-600 transition-colors duration-300 ease-in'
-              />
-            </span>
-            <div>
-              <Link 
-                href={`/projects/${projects[currentProjectTitleIdex].slug}`}
-                className='cursor-pointer hover:text-red-600 transition-colors duration-300 ease-in'
+            Some highlights of the current projects
+          </p>
+          <span 
+            className={`flex flex-col items-center justify-center gap-3 tracking-widest 
+              ${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'}`}
+          >
+            Don’t miss out! See the full details 
+            <ArrowDown 
+              className='size-5 hover:text-sky-600 transition-colors duration-300 ease-in'
+            />
+          </span>
+          <div>
+            <Link 
+              href={`/projects/${projects[currentProjectTitleIdex].slug}`}
+              className='cursor-pointer hover:text-red-600 transition-colors duration-300 ease-in'
+            >
+              <span
+                ref={projectsTitleCarouselRef}
+                className='text-3xl tracking-widest'
               >
-                <span
-                  ref={projectsTitleCarouselRef}
-                  className='text-lg tracking-widest'
-                >
-                  {projects[currentProjectTitleIdex].title}
-                </span>
-              </Link>
-            </div>
-          </div>
-
-          <div 
-            ref={socialsMediaConnectionsRef}
-            className='flex flex-col items-center gap-3'
-          >
-            <span className='text-lg'>Find me on Socials</span>
-
-            <div className='flex items-center'>
-              <div className='flex flex-col items-center'>
-                <div
-                  ref={linkedinSocialsContainerRef}
-                  onMouseEnter={() => linkedinSocialsAnimationIconRef.current?.play()}
-                  onMouseLeave={() => linkedinSocialsAnimationIconRef.current?.stop()}
-                  className='w-12 h-12'
-                />
-                <Link
-                  href='https://www.linkedin.com/in/kaiqueprado/'
-                  target='_blank'
-                  className='px-3 text-lg rounded-sm border border-transparent hover:bg-blue-500/30 hover:border hover:border-blue-100/30 transition-all duration-300 ease-in-out'
-                >
-                  LinkedIn
-                </Link>
-              </div>
-              <div className='flex flex-col items-center'>
-                <div
-                  ref={githubSocialsContainerRef}
-                  onMouseEnter={() => githubSocialsAnimationIconRef.current?.play()}
-                  onMouseLeave={() => githubSocialsAnimationIconRef.current?.pause()}
-                  className='w-12 h-12'
-                />
-                <Link
-                  href='https://github.com/kiqprado'
-                  target='_blank'
-                  className='px-3 text-lg rounded-sm border border-transparent hover:bg-neutral-500/30 hover:border hover:border-neutral-100/30 transition-all duration-300 ease-in-out'
-                >
-                  GitHub
-                </Link>
-              </div>
-            </div>
-
-            <div className='flex flex-col gap-3 items-center'>
-              <span>Send me a message</span>
-              <button>Email</button>
-            </div>
+                {projects[currentProjectTitleIdex].title}
+              </span>
+            </Link>
           </div>
         </div>
 
         <div 
           ref={shortSelfPresentationRef}
           className='min-h-full space-y-3'>
-          <div className='flex items-center gap-3'>
+          <div className='flex items-center gap-5'>
             <Link
               href={'https://www.linkedin.com/in/kaiqueprado/'}
               target='_blank'
@@ -309,13 +294,14 @@ export default function Home() {
               alt='Profile Picture of Kaique Prado'
               height={66}
               width={66}
-              className='rounded-4xl p-0.5 border border-zinc-300'
+              className='rounded-4xl p-0.5 border border-zinc-300 hover:border-zinc-50 transition-colors duration-300 ease-in-out'
             />
             </Link>
             
             <Link
               href={'https://www.linkedin.com/in/kaiqueprado/'}
               target='_blank'
+              className={`${mobileRangeFull || tabletRangeFull ? 'text-lg tracking-wider' : 'text-md'}`}
             >
               Let’s build together
             </Link>
@@ -335,16 +321,83 @@ Minha stack de estilização inclui Tailwind CSS (meu preferido), além de Sass 
 
 Acredito em colaboração, inovação e soluções robustas—vamos construir algo incrível juntos!</p> */}
         </div>
-
+        
         <div 
-          ref={userLocationSettingRef}
-          className='flex gap-1.5 items-center mb-16'
+          ref={socialsMediaConnectionsRef}
+          className='flex flex-col items-center gap-3 mb-9'
         >
-          <span>Location 📍</span>
-          <LocationAndTimeDisplay/>
+          <span
+            className={`${mobileRangeFull ? 'text-xl' : 'text-md'}`}
+          >
+            Find me on Socials
+          </span>
+          <div className='flex items-center'>
+            <div className='flex flex-col items-center'>
+              <div
+                ref={linkedinSocialsContainerRef}
+                onMouseEnter={() => linkedinSocialsAnimationIconRef.current?.play()}
+                onMouseLeave={() => linkedinSocialsAnimationIconRef.current?.stop()}
+                className='w-12 h-12'
+              />
+              <Link
+                href='https://www.linkedin.com/in/kaiqueprado/'
+                target='_blank'
+                className='px-3 text-lg rounded-sm border border-transparent hover:bg-blue-500/30 hover:border hover:border-blue-100/30 transition-all duration-300 ease-in-out'
+              >
+                LinkedIn
+              </Link>
+            </div>
+            <div className='flex flex-col items-center'>
+              <div
+                ref={githubSocialsContainerRef}
+                onMouseEnter={() => githubSocialsAnimationIconRef.current?.play()}
+                onMouseLeave={() => githubSocialsAnimationIconRef.current?.pause()}
+                className='w-12 h-12'
+              />
+              <Link
+                href='https://github.com/kiqprado'
+                target='_blank'
+                className='px-3 text-lg rounded-sm border border-transparent hover:bg-neutral-500/30 hover:border hover:border-neutral-100/30 transition-all duration-300 ease-in-out'
+              >
+                GitHub
+              </Link>
+            </div>
+            <div className='flex flex-col items-center'>
+                <div
+                  ref={discordSocialsContainerRef}
+                  onMouseEnter={() => discordSocialsAnimationIconRef.current?.play()}
+                  onMouseLeave={() => discordSocialsAnimationIconRef.current?.pause()}
+                  className='w-11 h-11'
+                />
+                <Link
+                  href='https://discord.com/users/1105146206348398642'
+                  target='_blank'
+                  className='px-3 text-lg rounded-sm border border-transparent hover:bg-violet-500/30 hover:border hover:border-violet-100/30 transition-all duration-300 ease-in-out'
+                >
+                  Discord
+                </Link>
+            </div>
+            <div className='flex flex-col items-center'>
+                <div
+                  ref={mailSocialsContainerRef}
+                  onMouseEnter={() => mailsSocialsAnimationIconRef.current?.play()}
+                  onMouseLeave={() => mailsSocialsAnimationIconRef.current?.stop()}
+                  className='w-22 h-22 flex overflow-hidden scale-[1.4] -m-[22px] pointer-events-auto'
+                />
+                <Link
+                  href='https://discord.com/users/1105146206348398642'
+                  target='_blank'
+                  className='px-3 text-lg rounded-sm border border-transparent hover:bg-gray-500/30 hover:border hover:border-gray-100/30 transition-all duration-300 ease-in-out z-10'
+                >
+                  Email
+                </Link>
+            </div>
+          </div>
         </div>    
       </main>
-      <Footer/>
+      {!(mobileRangeFull || tabletRangeFull) && (
+        <Footer/> 
+      )} 
     </div>
   )
 }
