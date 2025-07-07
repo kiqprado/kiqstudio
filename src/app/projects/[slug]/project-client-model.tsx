@@ -228,21 +228,25 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
           </ButtonLink>
         </div>
       
-        <div className='h-svh relative flex flex-col items-center justify-center'>
-          <h1 
-            ref={projectTitleTextRef}
-            className={`tracking-widest font-bold text-6xl`}>
-            {project.title}
-          </h1>
-          <p 
-            ref={projectDescriptionTextRef}
-            className={`absolute ${mobileRangeFull || tabletRangeFull ? 'top-136' : 'top-124'} px-3 text-justify max-w-4xl`}
-          >
-            {project.description}
-          </p>
+        <div className='h-svh flex items-center justify-center'>
+          <div className='w-full flex flex-col items-center relative'>
+            <h1 
+              ref={projectTitleTextRef}
+              className={`tracking-widest font-bold text-6xl`}
+            >
+              {project.title}
+            </h1>
+            <p 
+              ref={projectDescriptionTextRef}
+              className={`absolute ${mobileRangeFull || tabletRangeFull ? 'top-[15vh] px-4' : 'top-[25vh]'}
+                max-w-4xl text-justify`}
+            >
+              {project.description}
+            </p>
+          </div>  
         </div>
-
-        <div className='flex flex-col items-center gap-3'>
+        
+        <div className='flex flex-col items-center gap-3 mt-16'>
           {project.images.map((image, index) => (
             <Image
               key={index}
@@ -275,9 +279,9 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
 
           <Link 
             href={'/'}
-            className='absolute bottom-12'
+            className='absolute bottom-12 text-xl tracking-wider hover:text-sky-500 hover:brightness-200 transition-colors duration-300 ease-in-out'
           >
-            Home
+            /Home
           </Link>
         </div> 
       </div>

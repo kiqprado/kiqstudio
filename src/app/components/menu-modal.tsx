@@ -75,7 +75,8 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
                 <Link
                   key={project.id}
                   href={`/projects/${project.slug}`}
-                  className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'}`}
+                  className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'} 
+                    hover:brightness-200 hover:tracking-wider transition-all duration-300 ease-in-out`}
                 >
                   {project.title}
                 </Link>
@@ -117,7 +118,8 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
                   <Link
                     key={contact.id}
                     href={`/contacts/${contact.slug}`}
-                    className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'}`}
+                    className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'} 
+                      hover:brightness-200 hover:tracking-wider transition-all duration-300 ease-in-out`}
                   >
                     {contact.title}
                   </Link>
