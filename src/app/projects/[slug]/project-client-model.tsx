@@ -29,11 +29,15 @@ interface IProjectClientModel {
 export function ProjectClientModel({ prevProject, project, nextProject}: IProjectClientModel) {
   const projectNavigationRef = useRef(null)
   const projectProgressNavBarRef = useRef(null)
-  const nextProjectProgressNavBarRef = useRef(null)
-  const footerRef = useRef(null)
 
   const projectTitleTextRef = useRef(null)
   const projectDescriptionTextRef = useRef(null)
+
+  const imageTemplateOfProjectRef = useRef<HTMLImageElement[]>([])
+  const imageTemplateCaptionProjectRef = useRef<HTMLDivElement[]>([])
+
+  const nextProjectProgressNavBarRef = useRef(null)
+  const footerRef = useRef(null)
 
   const [ projectIsTransitioning, setProjectIsTransitioning ] = useState(false)
   const [ shouldUpdateNavBarProgress, setShouldUpdateNavBarProgress ] = useState(false)
@@ -106,6 +110,42 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
       })
 
       SetUpFooterAnimation()
+    }
+
+    function SetUpImagesScrollTrigger() {
+      const triggerElement = document.querySelector('.images-section')
+
+      if(!triggerElement || imageTemplateOfProjectRef.current.length === 0) return
+
+      gsap.set([...imageTemplateOfProjectRef.current, ...imageTemplateCaptionProjectRef.current], {
+        opacity: 0,
+        y: 20
+      })
+
+      ScrollTrigger.create({
+        trigger: triggerElement,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          const timeLine = gsap.timeline()
+          project.images.forEach((_, index) => {
+            timeLine.to(imageTemplateOfProjectRef.current[index], {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: 'power2.inOut'
+            })
+            .to(imageTemplateCaptionProjectRef.current[index] , {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: 'power2.inOut'
+            },
+              '-=0.3'
+            )
+          })
+        }
+      })
     }
 
     function SetUpFooterAnimation() {
@@ -185,11 +225,14 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
     function cleanupAnimations() {
       return () => {
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        imageTemplateOfProjectRef.current = []
+        imageTemplateCaptionProjectRef.current = []
       }
     }
 
     SetUpInitialAnimations()
     SetUpGlobalScrollTriggers()
+    SetUpImagesScrollTrigger()
 
     return cleanupAnimations()
 
@@ -246,16 +289,29 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
           </div>  
         </div>
         
-        <div className='flex flex-col items-center gap-3 mt-16'>
+        <div className='w-full px-3 mt-16 images-section'>
           {project.images.map((image, index) => (
-            <Image
+            <div
               key={index}
-              src={image}
-              alt={`Image of ${project.title}`}
-              width={356}
-              height={52}
-              className='rounded-md'
-            />
+              className='flex flex-col items-center gap-3'
+            >
+              <Image
+                src={image}
+                alt={`Image of ${project.title}`}
+                ref={(el) => {if(el) imageTemplateOfProjectRef.current[index] = el}}
+                width={356}
+                height={52}
+                className='rounded-md'
+              />
+              <div
+                ref={(el) => {if(el) imageTemplateCaptionProjectRef.current[index] = el}}
+                className='mb-3'
+              >
+                <p className='px-4 text-justify tracking-wider'>
+                  {project.images_captions[index]}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
 
