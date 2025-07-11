@@ -70,19 +70,21 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
               &#47;&#47;{`${projects.length}`.padStart(2, '0')}
             </span>
             { toggleProjectsSubMenuModal && (
-            <div className='flex flex-col gap-1.5 items-center justify-center'>
-              {projects.map((project) => (
-                <Link
-                  key={project.id}
-                  href={`/projects/${project.slug}`}
-                  className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'} 
-                    hover:brightness-200 hover:tracking-wider transition-all duration-300 ease-in-out`}
-                >
-                  {project.title}
-                </Link>
-              ))}
-            </div>
-          )}
+              <div
+                className='flex flex-col gap-1.5 items-center justify-center'
+              >
+                {projects.map((project) => (
+                  <Link
+                    key={project.id}
+                    href={`/projects/${project.slug}`}
+                    className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'} 
+                      hover:brightness-200 hover:tracking-wider transition-all duration-300 ease-in-out`}
+                  >
+                    {project.title}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
           
           <div className='relative'>

@@ -186,7 +186,7 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
         })
       }
 
-      if(self.progress >= 0.3 && !projectIsTransitioning) {
+      if(self.progress >= 0.2 && !projectIsTransitioning) {
         setShouldUpdateNavBarProgress(false)
         setProjectIsTransitioning(true)
         AnimateNextProjectTransition()

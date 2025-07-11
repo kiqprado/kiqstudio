@@ -25,13 +25,13 @@ const projects: Iprojects[] = [
     description: 'Imagine booking your dream trip as fast as ordering a ride. No endless scrolling. No chaotic tabs. Just a sleek, lightning-fast interface that gets you from wanderlust to departure with minimal effort. Plann.Er is the minimalist travel app designed for those who value time as much as adventure. With an ultra-responsive design, AI-powered smart planning, and a single-screen overview of your entire itinerary, you’re always one tap away from paradise.',
     images: [
       '/projects/PlannEr_1-1.png',
-      '/projects/PlannEr_1-1.png',
-      '/projects/PlannEr_1-1.png'
+      '/projects/PlannEr_1-2.png',
+      '/projects/PlannEr_1-3.png'
     ],
     images_captions: [
-      'This image introduces you to a very first page of the project',
-      'Want to see? click it!',
-      'Ayo, squad! This project was born from a minor glitch that keeps messin’ with our daily vibe. Time to level up and maximize our grind?'
+      'Travel smart, travel fast.',
+      'Your next adventure? Minimal effort, maximum adventure.',
+      'Tag your travel squad with just an email—no hassle, no spam, just smooth updates. They’ll get all the deets (flights, stays, even that secret sunset spot) without lifting a finger. Easy-peasy, group-trip breezy!'
     ]
   },
   {
@@ -41,13 +41,13 @@ const projects: Iprojects[] = [
     description: ' Introducing a sophisticated app designed to enhance your study sessions by incorporating the renowned Pomodoro Technique. This intuitive tool helps you to achieve your academic goals with ease. Set customizable timers, track your progress, and enjoy a seamless study experience tailored to your needs. Elevate your learning journey with this essential productivity companion.',
     images: [
       '/projects/Focus_1-1.png',
-      '/projects/Focus_1-1.png',
-      '/projects/Focus_1-1.png'
+      '/projects/Focus_1-2.png',
+      '/projects/Focus_1-3.png'
     ],
     images_captions: [
-      'This image introduces you to a very first page of the project',
-      'Want to see? click it!',
-      'Ayo, squad! This project was born from a minor glitch that keeps messin’ with our daily vibe. Time to level up and maximize our grind?'
+      'The timer that turns ‘I’ll do it later’ into ‘Done.',
+      'Sprint. Rest. Conquer. Repeat. Your secret weapon for crushing goals.',
+      'Crush procrastination! This Pomodoro app = your focus weapon. Study smart, track progress, achieve more. Your future self says thanks.'
     ]
   },
   {
@@ -57,13 +57,29 @@ const projects: Iprojects[] = [
     description: 'Thats more than an app—it’s your partner in achieving daily success. Whether it’s work deadlines, personal goals, or moments of relaxation, FlowTrack helps you organize, prioritize, and thrive. With strategic checkpoints and a user-friendly design, you’ll not only manage your time but also cultivate habits that lead to long-term growth and well-being. Transform the way you approach your day, one task at a time.',
     images: [
       '/projects/Habits_1-1.png',
-      '/projects/Habits_1-1.png',
-      '/projects/Habits_1-1.png'
+      '/projects/Habits_1-2.png',
+      '/projects/Habits_1-3.png'
     ],
     images_captions: [
-      'This image introduces you to a very first page of the project',
-      'Want to see? click it!',
-      'Ayo, squad! This project was born from a minor glitch that keeps messin’ with our daily vibe. Time to level up and maximize our grind?'
+      'Own your day. Achieve more. FlowTrack.',
+      'Your flow, your way. Simple. Personal. Powerful.',
+      'No rigid systems. Just intuitive design that bends to your habits, not the opposite.'
+    ]
+  },
+  {
+    id: 3,
+    slug: 'neatly',
+    title: 'Neatly',
+    description: 'Tired of messy, chaotic shopping lists? Meet your personal grocery organizer bot. Simply send your jumbled list—via WhatsApp, Telegram, Discord, or our website—and watch it magically sort items into perfect categories: produce, dairy, pantry, and more. No effort, no stress. Just a smarter way to shop. Save time, skip the aisle-hopping frustration, and never forget an item again. Try it now—your future organized self will thank you!',
+    images: [
+      '/projects/Neatly_1-1.png',
+      '/projects/Neatly_1-2.png',
+      '/projects/Neatly_1-3.png'
+    ],
+    images_captions: [
+      'Neatly: Tap. Sort. Live Better..',
+      'Quick usage overview: Master efficient interactions with your organizer buddy in no time.',
+      'Neatly is your AI-powered list organizer, designed to simplify shopping, task management, and daily planning.'
     ]
   }
 ]
