@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
-
 import Link from 'next/link'
 
 import { projects, contacts } from '../portfolio-data/data'
-
 import { useMediaRange } from '../utils/breakpoints-hook'
+
+import { SubMenuModal } from '@/app/components/sub-menu-modal'
 
 import { X } from 'lucide-react'
 
@@ -70,20 +70,11 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
               &#47;&#47;{`${projects.length}`.padStart(2, '0')}
             </span>
             { toggleProjectsSubMenuModal && (
-              <div
-                className='flex flex-col gap-1.5 items-center justify-center'
-              >
-                {projects.map((project) => (
-                  <Link
-                    key={project.id}
-                    href={`/projects/${project.slug}`}
-                    className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'} 
-                      hover:brightness-200 hover:tracking-wider transition-all duration-300 ease-in-out`}
-                  >
-                    {project.title}
-                  </Link>
-                ))}
-              </div>
+              <SubMenuModal
+                items={projects}
+                basePath='projects'
+                isMobile={mobileRangeFull || tabletRangeFull}
+              />
             )}
           </div>
           
@@ -115,18 +106,11 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
               &#47;&#47;{`${contacts.length}`.padStart(2, '0')}
             </span>
             {toggleContactsSubMenuModal && (
-              <div className='flex flex-col gap-1.5 items-center justify-center'>
-                {contacts.map((contact) => (
-                  <Link
-                    key={contact.id}
-                    href={`/contacts/${contact.slug}`}
-                    className={`${mobileRangeFull || tabletRangeFull ? 'text-xl' : 'text-md'} 
-                      hover:brightness-200 hover:tracking-wider transition-all duration-300 ease-in-out`}
-                  >
-                    {contact.title}
-                  </Link>
-                ))}
-              </div>
+              <SubMenuModal
+                items={contacts}
+                basePath='contacts'
+                isMobile={mobileRangeFull || tabletRangeFull}
+              />
             )}
           </div>
         </div>
