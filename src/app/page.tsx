@@ -117,7 +117,7 @@ export default function Home() {
       )
     }
 
-    if(buttonContainerPresentationRef.current) {
+    if((mobileRangeFull || tabletRangeFull) && buttonContainerPresentationRef.current) {
       timeLine.fromTo(buttonContainerPresentationRef.current, {
         opacity: 0,
         y: 20
@@ -130,7 +130,7 @@ export default function Home() {
         '+=1'
       )
     }
-  }, [])
+  }, [mobileRangeFull, tabletRangeFull])
   //ANIMATIONS SECOND SECTION VH
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -319,7 +319,6 @@ export default function Home() {
       observer.disconnect()
     }
   }, [])
-
   // ANIMATION LINKS SOCIAL MEDIA
   useEffect(() => {
     if(linkedinSocialsContainerRef.current) {
@@ -385,11 +384,13 @@ I believe in collaboration, innovation, and robust solutions—let’s build som
       <Header/>
       <main 
         ref={mainContainerRef}
-        className={`flex-1 ${mobileRangeFull || tabletRangeFull ? 'px-3': 'px-9'} flex flex-col items-center gap-5 overflow-y-auto`}
+        className={`flex-1 ${mobileRangeFull || tabletRangeFull ? 'px-3 gap-5': 'px-9 gap-4'} flex flex-col items-center  overflow-y-auto overflow-x-hidden`}
       >
         <div 
           ref={introMainDescriptionSectionRef}
-          className='min-h-full w-full relative flex flex-col gap-6 justify-center'>
+          className={`w-full ${mobileRangeFull || tabletRangeFull ? 'min-h-full gap-6' : ''} 
+            flex flex-col justify-center relative`}
+        >
           <h2 
             ref={titlePresentationRef}
             className={`${mobileRangeFull ? 'text-4xl tracking-wider' : 'text-3xl'}`}
@@ -403,203 +404,214 @@ I believe in collaboration, innovation, and robust solutions—let’s build som
             {introDescriptionParagraph}
           </p>
 
-          <div 
-            ref={buttonContainerPresentationRef}
-            className='absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center justify-center'
-          >
-            <Button
-              onClick={HandleScrollToProjectsView}
-              size='fit'
+          {(mobileRangeFull || tabletRangeFull) && (
+            <div 
+              ref={buttonContainerPresentationRef}
+              className='absolute bottom-2 left-1/2 -translate-x-1/2'
             >
-              <span 
-                className={`${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'} whitespace-nowrap`}
+              <Button
+                onClick={HandleScrollToProjectsView}
+                size='fit'
               >
-                Come to see it
-              </span> 
-              <ChevronsDown 
-                className={`${mobileRangeFull || tabletRangeFull ? 'size-6' : 'size-5'}`}
-              />  
-            </Button>
-          </div>
-        </div>
-
-        <div 
-          ref={projectPresentationDetailsRef}
-          className={`py-3 flex flex-col items-center space-y-12 text-center 
-            ${mobileRangeFull || tabletRangeFull ? 'min-h-full' : ''} relative`}
-        >
-          <div
-            ref={projectImageCard}
-          >
-            <AnimatePresence mode='wait'>
-            <motion.img
-              key={currentImageProjectTemplate.slug}
-              src={ImageTemplate}
-              alt={currentImageProjectTemplate.title}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0}}
-              transition={{ duration: 3.5 }}
-              className='object-cover aspect-video rounded-md shadow-[2px_3px_12px_-2px_rgba(150,150,160,0.2),-1px_-1px_8px_0px_rgba(255,255,255,0.02)] hover:shadow-[4px_6px_20px_-4px_rgba(180,180,190,0.3),-2px_-2px_12px_0px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out'
-              />
-          </AnimatePresence>
-          </div>
-          <p 
-            ref={shortParagraphFromImagesCarouselHighLightsRef}
-            className={`tracking-widest ${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'}`}
-          >
-            Some highlights of the current projects
-          </p>
-          <span
-            ref={shortSpanFromTitleProjectsCarouselRef}
-            className={`flex flex-col items-center justify-center gap-3 tracking-widest 
-              ${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'}`}
-          >
-            Don’t miss out! See the full details 
-            <ArrowDown 
-              className='size-5 hover:text-sky-600 transition-colors duration-300 ease-in'
-            />
-          </span>
-          <div>
-            <Link 
-              href={`/projects/${projects[currentProjectTitleIdex].slug}`}
-              className='cursor-pointer hover:text-red-600 transition-colors duration-300 ease-in'
-            >
-              <span
-                ref={projectsTitleCarouselRef}
-                className='text-3xl tracking-widest'
-              >
-                {projects[currentProjectTitleIdex].title}
-              </span>
-            </Link>
-          </div>
-          
-          <div className='absolute bottom-3.5 right-1.5'>
-            <ButtonIcon
-              onClick={HandleScrollToShortSelfPresentationView}
-            >
-              <ChevronsDown className='size-7'/>
-            </ButtonIcon>
-          </div>
-          
-        </div>
-
-        <div
-          ref={shortSelfPresentationRef}
-          className='min-h-full space-y-3 py-5'
-        >
-          <div
-            ref={profileSectionLinksFromCollabsRef}
-            className='flex items-center gap-5'
-          >
-            <Link
-              href={'https://www.linkedin.com/in/kaiqueprado/'}
-              target='_blank'
-            >
-              <Image
-              src={'https://avatars.githubusercontent.com/kiqprado'}
-              alt='Profile Picture of Kaique Prado'
-              height={66}
-              width={66}
-              className='rounded-4xl p-0.5 border border-zinc-300 hover:border-zinc-50 transition-colors duration-300 ease-in-out'
-            />
-            </Link>
-            
-            <Link
-              href={'https://www.linkedin.com/in/kaiqueprado/'}
-              target='_blank'
-              className={`${mobileRangeFull || tabletRangeFull ? 'text-lg tracking-wider' : 'text-md'}`}
-            >
-              Let’s build together
-            </Link>
-          </div>
-          <p
-            ref={profileShortDescriptionRef}
-            className='text-justify'
-          >
-            {selfShortPresentationDescriptionParagraph}
-          </p>
-          {/*<p>Olá! Sou um Desenvolvedor Frontend & Fullstack apaixonado por criar aplicações web performáticas, seguras e escaláveis. Seja SPAs, Landing Pages, Lojas Virtuais ou Roteamento Client-Side, desenvolvo experiências digitais fluidas com código limpo e eficiente.
-
-No backend, construo bancos de dados estruturados em Node.js, garantindo segurança e confiabilidade com práticas modernas como JWT, Zod, bcrypt, OAuth e validação via middlewares. No frontend, trabalho principalmente com Next.js (React), mas também tenho experiência com Vue e Angular, entregando interfaces rápidas, dinâmicas e otimizadas para SEO.
-
-Minha stack de estilização inclui Tailwind CSS (meu preferido), além de Sass e Bootstrap, assegurando designs precisos com código sustentável.
-
-Acredito em colaboração, inovação e soluções robustas—vamos construir algo incrível juntos!</p> */}
+                <span 
+                  className={`${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'} whitespace-nowrap`}
+                >
+                  Come to see it
+                </span> 
+                <ChevronsDown 
+                  className={`${mobileRangeFull || tabletRangeFull ? 'size-6' : 'size-5'}`}
+                />  
+              </Button>
+            </div>
+          )}
         </div>
         
         <div 
-          ref={socialsMediaConnectionsRef}
-          className='flex flex-col items-center gap-3 mb-9'
+          ref={projectPresentationDetailsRef}
+          className={`flex ${mobileRangeFull || tabletRangeFull ? 'flex-col py-6' : 'flex-row'}`}
         >
-          <span
-            className={`${mobileRangeFull ? 'text-xl' : 'text-md'}`}
+          <div 
+            className={`flex flex-1 space-y-12 ${mobileRangeFull || tabletRangeFull ? 'flex-col min-h-svh' : 'flex-row py-6'} relative`}
           >
-            Find me on Socials
-          </span>
-          <div className='flex items-center'>
-            <div className='flex flex-col items-center'>
+            <div
+              className={`flex flex-col items-center gap-12 ${mobileRangeFull || tabletRangeFull ? 'w-full' : 'w-[60%]'}`}
+            >
               <div
-                ref={linkedinSocialsContainerRef}
-                onMouseEnter={() => linkedinSocialsAnimationIconRef.current?.play()}
-                onMouseLeave={() => linkedinSocialsAnimationIconRef.current?.stop()}
-                className='w-12 h-12'
-              />
-              <Link
-                href='https://www.linkedin.com/in/kaiqueprado/'
-                target='_blank'
-                className='px-3 text-lg rounded-sm border border-transparent hover:bg-blue-500/30 hover:border hover:border-blue-100/30 transition-all duration-300 ease-in-out'
+                ref={projectImageCard}
               >
-                LinkedIn
-              </Link>
+                <AnimatePresence mode='wait'>
+                  <motion.img
+                    key={currentImageProjectTemplate.slug}
+                    src={ImageTemplate}
+                    alt={currentImageProjectTemplate.title}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0}}
+                    transition={{ duration: 3.5 }}
+                    className='object-cover aspect-video rounded-md shadow-[2px_3px_12px_-2px_rgba(150,150,160,0.2),-1px_-1px_8px_0px_rgba(255,255,255,0.02)] hover:shadow-[4px_6px_20px_-4px_rgba(180,180,190,0.3),-2px_-2px_12px_0px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out'
+                  />
+                </AnimatePresence>
+              </div>
+              <p 
+                ref={shortParagraphFromImagesCarouselHighLightsRef}
+                className={`text-center tracking-widest ${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'}`}
+              >
+                Some highlights of the current projects
+              </p>
             </div>
-            <div className='flex flex-col items-center'>
+
+            <div
+               className={`flex flex-col items-center gap-12 ${mobileRangeFull || tabletRangeFull ? 'w-full' : 'flex-1'}`}
+            >
+              <span
+                ref={shortSpanFromTitleProjectsCarouselRef}
+                className={`flex flex-col items-center justify-center gap-3 tracking-widest 
+                  ${mobileRangeFull || tabletRangeFull ? 'text-lg' : 'text-md'}`}
+              >
+                Don’t miss out! See the full details 
+                <ArrowDown 
+                  className='size-5 hover:text-sky-600 transition-colors duration-300 ease-in'
+                />
+              </span>
+              <div className='min-h-18'>
+                <Link 
+                  href={`/projects/${projects[currentProjectTitleIdex].slug}`}
+                  className='cursor-pointer hover:text-red-600 transition-colors duration-300 ease-in'
+                >
+                  <span
+                    ref={projectsTitleCarouselRef}
+                    className='text-3xl tracking-widest'
+                  >
+                    {projects[currentProjectTitleIdex].title}
+                  </span>
+                </Link>
+              </div>
+            </div>
+
+            {(mobileRangeFull || tabletRangeFull) && (
+              <div className='absolute bottom-22 right-1'>
+                <ButtonIcon
+                  onClick={HandleScrollToShortSelfPresentationView}
+                >
+                  <ChevronsDown className='size-7'/>
+                </ButtonIcon>
+              </div>
+            )}
+          </div>
+
+          <div className={`${mobileRangeFull || tabletRangeFull ? 'w-full h-svh' : 'w-1/4 space-y-6'}`}>
+            <div
+              ref={shortSelfPresentationRef}
+              className={`${mobileRangeFull || tabletRangeFull ? 'min-h-full py-5' : ''} space-y-3`}
+            >
               <div
-                ref={githubSocialsContainerRef}
-                onMouseEnter={() => githubSocialsAnimationIconRef.current?.play()}
-                onMouseLeave={() => githubSocialsAnimationIconRef.current?.pause()}
-                className='w-12 h-12'
-              />
-              <Link
-                href='https://github.com/kiqprado'
-                target='_blank'
-                className='px-3 text-lg rounded-sm border border-transparent hover:bg-neutral-500/30 hover:border hover:border-neutral-100/30 transition-all duration-300 ease-in-out'
+                ref={profileSectionLinksFromCollabsRef}
+                className='flex items-center gap-5'
               >
-                GitHub
-              </Link>
-            </div>
-            <div className='flex flex-col items-center'>
-                <div
-                  ref={discordSocialsContainerRef}
-                  onMouseEnter={() => discordSocialsAnimationIconRef.current?.play()}
-                  onMouseLeave={() => discordSocialsAnimationIconRef.current?.pause()}
-                  className='w-11 h-11'
-                />
                 <Link
-                  href='https://discord.com/users/1105146206348398642'
+                  href={'https://www.linkedin.com/in/kaiqueprado/'}
                   target='_blank'
-                  className='px-3 text-lg rounded-sm border border-transparent hover:bg-violet-500/30 hover:border hover:border-violet-100/30 transition-all duration-300 ease-in-out'
                 >
-                  Discord
-                </Link>
-            </div>
-            <div className='flex flex-col items-center'>
-                <div
-                  ref={mailSocialsContainerRef}
-                  onMouseEnter={() => mailsSocialsAnimationIconRef.current?.play()}
-                  onMouseLeave={() => mailsSocialsAnimationIconRef.current?.stop()}
-                  className='w-22 h-22 flex overflow-hidden scale-[1.4] -m-[22px] pointer-events-auto'
+                  <Image
+                  src={'https://avatars.githubusercontent.com/kiqprado'}
+                  alt='Profile Picture of Kaique Prado'
+                  height={66}
+                  width={66}
+                  className='rounded-4xl p-0.5 border border-zinc-300 hover:border-zinc-50 transition-colors duration-300 ease-in-out'
                 />
-                <Link
-                  href='https://discord.com/users/1105146206348398642'
-                  target='_blank'
-                  className='px-3 text-lg rounded-sm border border-transparent hover:bg-gray-500/30 hover:border hover:border-gray-100/30 transition-all duration-300 ease-in-out z-10'
-                >
-                  Email
                 </Link>
+                
+                <Link
+                  href={'https://www.linkedin.com/in/kaiqueprado/'}
+                  target='_blank'
+                  className={`${mobileRangeFull || tabletRangeFull ? 'text-lg tracking-wider' : 'text-md'}`}
+                >
+                  Let’s build together
+                </Link>
+              </div>
+              <p
+                ref={profileShortDescriptionRef}
+                className={`text-justify ${ mobileRangeFull || tabletRangeFull ? 'h-fit' : 'max-h-66 overflow-y-auto'}`}
+              >
+                {selfShortPresentationDescriptionParagraph}
+              </p>
+            </div>
+
+            <div 
+              ref={socialsMediaConnectionsRef}
+              className={`flex flex-col items-center gap-3 ${mobileRangeFull || tabletRangeFull ? 'mb-9' : ''}`}
+            >
+              <span
+                className={`${mobileRangeFull ? 'text-xl' : 'text-md'}`}
+              >
+                Find me on Socials
+              </span>
+              <div className='flex items-center'>
+                <div className='flex flex-col items-center'>
+                  <div
+                    ref={linkedinSocialsContainerRef}
+                    onMouseEnter={() => linkedinSocialsAnimationIconRef.current?.play()}
+                    onMouseLeave={() => linkedinSocialsAnimationIconRef.current?.stop()}
+                    className={`${mobileRangeFull || tabletRangeFull ? 'w-12 h-12' : 'w-10 h-10'}`}
+                  />
+                  <Link
+                    href='https://www.linkedin.com/in/kaiqueprado/'
+                    target='_blank'
+                    className='px-3 text-lg rounded-sm border border-transparent hover:bg-blue-500/30 hover:border hover:border-blue-100/30 transition-all duration-300 ease-in-out'
+                  >
+                    LinkedIn
+                  </Link>
+                </div>
+                <div className='flex flex-col items-center'>
+                  <div
+                    ref={githubSocialsContainerRef}
+                    onMouseEnter={() => githubSocialsAnimationIconRef.current?.play()}
+                    onMouseLeave={() => githubSocialsAnimationIconRef.current?.pause()}
+                    className={`${mobileRangeFull || tabletRangeFull ? 'w-12 h-12' : 'w-10 h-10'}`}
+                  />
+                  <Link
+                    href='https://github.com/kiqprado'
+                    target='_blank'
+                    className='px-3 text-lg rounded-sm border border-transparent hover:bg-neutral-500/30 hover:border hover:border-neutral-100/30 transition-all duration-300 ease-in-out'
+                  >
+                    GitHub
+                  </Link>
+                </div>
+                <div className='flex flex-col items-center'>
+                    <div
+                      ref={discordSocialsContainerRef}
+                      onMouseEnter={() => discordSocialsAnimationIconRef.current?.play()}
+                      onMouseLeave={() => discordSocialsAnimationIconRef.current?.pause()}
+                      className={`${mobileRangeFull || tabletRangeFull ? 'w-11 h-11' : 'w-9 h-9'}`}
+                    />
+                    <Link
+                      href='https://discord.com/users/1105146206348398642'
+                      target='_blank'
+                      className='px-3 text-lg rounded-sm border border-transparent hover:bg-violet-500/30 hover:border hover:border-violet-100/30 transition-all duration-300 ease-in-out mt-1'
+                    >
+                      Discord
+                    </Link>
+                </div>
+                <div className='flex flex-col items-center'>
+                    <div
+                      ref={mailSocialsContainerRef}
+                      onMouseEnter={() => mailsSocialsAnimationIconRef.current?.play()}
+                      onMouseLeave={() => mailsSocialsAnimationIconRef.current?.stop()}
+                      className={`${mobileRangeFull || tabletRangeFull ? 'w-20 h-20 -m-[16px]' : 'w-16 h-16 -m-[12px]'} 
+                        flex overflow-hidden scale-[1.4]  pointer-events-auto`}
+                    />
+                    <Link
+                      href='https://discord.com/users/1105146206348398642'
+                      target='_blank'
+                      className='px-3 text-lg rounded-sm border border-transparent hover:bg-gray-500/30 hover:border hover:border-gray-100/30 transition-all duration-300 ease-in-out z-10'
+                    >
+                      Email
+                    </Link>
+                </div>
+              </div>
             </div>
           </div>
-        </div>    
+        </div>   
       </main>
       {!(mobileRangeFull || tabletRangeFull) && (
         <Footer/> 

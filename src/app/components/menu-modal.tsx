@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react'
-import Link from 'next/link'
 
 import { projects, contacts } from '../portfolio-data/data'
 import { useMediaRange } from '../utils/breakpoints-hook'
@@ -44,15 +43,15 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
   }, [ toggleProjectsSubMenuModal])
 
   return(
-    <div className='h-screen w-full z-1 absolute inset-0 bg-zinc-950/50'>
-      <div className='relative flex bg-zinc-950'>
+    <div className={`absolute z-1 w-full h-screen inset-0 bg-zinc-950/50`}>
+      <div className={`relative flex ${mobileRangeFull || tabletRangeFull ? 'bg-zinc-950' : 'bg-transparent'} `}>
         <button
           onClick={HandleOpeningMenu}
-          className='absolute top-2.5 right-2.5'
+          className='absolute top-2.5 right-2.5 bg-zinc-950'
         >
           <X className='hover:scale-110 hover:text-red-500 transition-all duration-300 ease-in-out'/>
         </button>
-        <div className='m-auto w-full space-y-3 pt-7 pb-3 text-center'>
+        <div className={`${mobileRangeFull || tabletRangeFull ? 'm-auto space-y-3 pt-7 pb-3' : 'flex justify-center gap-15 mt-3.5'} w-full text-center`}>
           <div 
             ref={projectsSubMenuRef}
             className='relative'
