@@ -531,7 +531,7 @@ I believe in collaboration, innovation, and robust solutions—let’s build som
               </div>
               <p
                 ref={profileShortDescriptionRef}
-                className={`text-justify ${ mobileRangeFull || tabletRangeFull ? 'h-fit' : 'max-h-66 overflow-y-auto'}`}
+                className={`text-justify ${ mobileRangeFull || tabletRangeFull ? 'h-fit' : 'max-h-66 overflow-y-auto pr-2 custom-scroll'}`}
               >
                 {selfShortPresentationDescriptionParagraph}
               </p>

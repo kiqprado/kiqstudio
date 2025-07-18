@@ -4,3 +4,17 @@ body {
   font-family: "Gruppo", sans-serif;
   letter-spacing: 0.4;
 }
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #52525b transparent;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #52525b;
+  border-radius: 6px;
+}
