@@ -15,6 +15,7 @@ import { useMediaRange } from './utils/breakpoints-hook'
 import { projects } from './portfolio-data/data'
 
 import { Header } from './components/header'
+import { EmailBoxModal } from './components/email-box-modal'
 import { Footer } from './components/footer'
 
 import { Button } from './elements/button'
@@ -36,7 +37,9 @@ export default function Home() {
   const titlePresentationRef = useRef(null)
   const descriptionPresentationRef = useRef(null)
   const buttonContainerPresentationRef = useRef<HTMLDivElement>(null)
+
   // SECOND SECTION
+  const projectDetailsContainerSectionRef = useRef<HTMLDivElement>(null)
   // PROJECTS IMAGES CARDS
   const projectImageCard = useRef(null)
   const [ currentImagesOnCarouselIndex, setCurrentImagesOnCarouselIndex ] = useState(0)
@@ -49,7 +52,9 @@ export default function Home() {
   const [ projectTitleHasRevealed, setProjectTitleHasRevealed ] = useState(false)
   const projectsTitleCarouselRef = useRef<HTMLAnchorElement>(null)
   const [ currentProjectTitleIdex, setCurrentProjectTitleIndex ] = useState(0)
+
   // THIRD SECTION
+  const SelfInfoDetailsContainerSectionRef = useRef<HTMLDivElement>(null)
   // SOCIALS LINK HEADER ON PRESENTATION
   const profileSectionLinksFromCollabsRef = useRef<HTMLDivElement>(null)
   const profileShortDescriptionRef = useRef<HTMLParagraphElement>(null)
@@ -63,6 +68,8 @@ export default function Home() {
   const mailSocialsContainerRef = useRef<HTMLDivElement>(null)
   const mailsSocialsAnimationIconRef = useRef<AnimationItem | null>(null)
 
+  const [ toggleEmailModalBoxContact, setToggleEmailModalBoxContact ] = useState(false)
+
   //Query's
   const isMobileSM = useMediaRange('mobileSM')
   const isMobileMD = useMediaRange('mobileMD')
@@ -72,6 +79,7 @@ export default function Home() {
   
   const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
   const tabletRangeFull = isTabletMD || isTabletLG
+  const desktopRangeFull = !mobileRangeFull && !tabletRangeFull
 
   function HandleScrollToProjectsView() {
     projectPresentationDetailsRef.current?.scrollIntoView({
@@ -86,25 +94,33 @@ export default function Home() {
       block: 'start'
     })
   }
-  //ANIMATIONS FIRST SECTION VH
-  // ANIMATIONS PORTFOLIO SHORT PRESENTATION
+
+  function HandleToggleEmailModalBoxContact() {
+    setToggleEmailModalBoxContact(prev => !prev)
+  }
+  //DESKTOP ANIMATION VIEW
   useEffect(() => {
-    const timeLine = gsap.timeline()
+    if(!desktopRangeFull)  return
+
+    const masterTimeLine = gsap.timeline()
+
+    // - INTRO SECTION - 
+    const introTimeLine = gsap.timeline()
 
     if(titlePresentationRef.current) {
-      timeLine.fromTo(titlePresentationRef.current, {
-        opacity: 0
+      introTimeLine.fromTo(titlePresentationRef.current, {
+        opacity: 0,
+        y: -30
       }, {
         opacity: 1,
+        y: 0,
         duration: 1,
         ease: 'power2.inOut'
-      },
-        0.3
-      )
+      })
     }
 
     if(descriptionPresentationRef.current) {
-      timeLine.fromTo(descriptionPresentationRef.current, {
+      introTimeLine.fromTo(descriptionPresentationRef.current, {
         text: ' ',
         opacity: 0
       }, {
@@ -113,12 +129,261 @@ export default function Home() {
         duration: 2,
         ease: 'power1.inOut'
       },
-        '>-0.8'
+        '+=0.3'
       )
     }
 
-    if((mobileRangeFull || tabletRangeFull) && buttonContainerPresentationRef.current) {
-      timeLine.fromTo(buttonContainerPresentationRef.current, {
+    // - DETAILS SECTION - 
+    const detailsTimeLine = gsap.timeline()
+
+    if(projectImageCard.current) {
+      detailsTimeLine.fromTo(projectImageCard.current, {
+        opacity: 0,
+        y: 40
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power2.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(shortParagraphFromImagesCarouselHighLightsRef.current) {
+      detailsTimeLine.fromTo(shortParagraphFromImagesCarouselHighLightsRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power2.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(shortSpanFromTitleProjectsCarouselRef.current) {
+      detailsTimeLine.fromTo(shortSpanFromTitleProjectsCarouselRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power1.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(projectsTitleCarouselRef.current) {
+      detailsTimeLine.fromTo(projectsTitleCarouselRef.current, 
+      {
+        opacity: 0,
+        y: 10,
+      },{
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power2.out',
+      },
+        '+=0.5'
+      ) 
+    }
+
+    // - SELF INFO SECTION - 
+    const selfInfoTimeLine = gsap.timeline()
+
+    if(profileSectionLinksFromCollabsRef.current) {
+      selfInfoTimeLine.fromTo(profileSectionLinksFromCollabsRef.current, {
+        opacity: 0,
+        x: 90
+      }, {
+        opacity: 1,
+        x: 0,
+        duration: 1.2,
+      ease: 'power1.inOut'
+      },
+        '+=0.7'
+      )
+    }
+
+    if(profileShortDescriptionRef.current) {
+      selfInfoTimeLine.fromTo(profileShortDescriptionRef.current, {
+        text: ' ',
+        opacity: 0
+      }, {
+        text: {
+          value: selfShortPresentationDescriptionParagraph
+        },
+        opacity: 1,
+        duration: 3.5,
+        ease: 'power1.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(socialsMediaConnectionsRef.current) {
+      selfInfoTimeLine.fromTo(socialsMediaConnectionsRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 1.5,
+        ease: 'power3.inOut'
+      },
+        '+=0.8'
+      )
+    }
+
+    masterTimeLine.add(introTimeLine).add(detailsTimeLine, '+=0.5').add(selfInfoTimeLine, '+=0.5')
+
+  }, [desktopRangeFull])
+
+  // ANIMATIONS CAROUSEL IMAGES
+  useEffect(() => {
+    let imageInterval: NodeJS.Timeout
+
+    function StartImagesProjectTemplateCarousel() {
+      imageInterval = setInterval(() => {
+        setCurrentImagesOnCarouselIndex(prev => (prev + 1) % projects.length)
+      }, 7000)
+    }
+
+    StartImagesProjectTemplateCarousel()
+
+    return () => {
+      clearInterval(imageInterval)
+    }
+  }, [])
+
+  // ANIMATIONS CAROUSEL TITLES PROJECTS
+   useEffect(() => {
+    // if(!projectTitleHasRevealed) return
+
+    function GenerateARandomIndex() {
+      const result: number = Math.floor(Math.random() * projects.length)
+      return result
+    }
+
+    function ChangeProjectsTitleRandomly() {
+      let nextIndex: number
+      do {
+        nextIndex = GenerateARandomIndex()
+      } while ( nextIndex === currentProjectTitleIdex)
+      setCurrentProjectTitleIndex(nextIndex)
+    }
+
+    function AnimatedProjectsTitleTransition() {
+     if(projectsTitleCarouselRef.current) {
+      gsap.fromTo(projectsTitleCarouselRef.current, {
+        text: ' ',
+      }, {
+        text: {
+          value: projects[currentProjectTitleIdex].title,
+          delimiter: '',
+        },
+        duration: 2.5,
+        ease: 'power1.inOut'
+      })
+     }
+    }
+    
+    AnimatedProjectsTitleTransition()
+
+    const interval = setInterval(() => {
+      ChangeProjectsTitleRandomly()
+    }, 3000)
+
+    return() => clearInterval(interval)
+  }, [currentProjectTitleIdex, projectTitleHasRevealed])
+
+  // ANIMATION LINKS SOCIAL MEDIA
+  useEffect(() => {
+    if(linkedinSocialsContainerRef.current) {
+      linkedinSocialsAnimationIconRef.current = lottie.loadAnimation({
+        container: linkedinSocialsContainerRef.current,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: '/icons8-linkedin.json'
+      })
+    }
+
+    if(githubSocialsContainerRef.current) {
+      githubSocialsAnimationIconRef.current = lottie.loadAnimation({
+        container: githubSocialsContainerRef.current,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: '/icons8-github.json'
+      })
+    }
+
+    if(discordSocialsContainerRef.current) {
+      discordSocialsAnimationIconRef.current = lottie.loadAnimation({
+        container: discordSocialsContainerRef.current,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: '/icons8-discord.json'
+      })
+    }
+
+    if(mailSocialsContainerRef.current) {
+      mailsSocialsAnimationIconRef.current = lottie.loadAnimation({
+        container: mailSocialsContainerRef.current,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: '/mail-icon.json'
+      })
+    }
+
+    return() => {
+      linkedinSocialsAnimationIconRef.current?.destroy()
+      githubSocialsAnimationIconRef.current?.destroy()
+      discordSocialsAnimationIconRef.current?.destroy()
+      mailsSocialsAnimationIconRef.current?.destroy()
+    }
+  }, [])
+
+  {/* ----------------VER DEPOIS -----------------
+  // MOBILE ANIMATION VIEW
+  useEffect(() => {
+    if(!mobileRangeFull || !tabletRangeFull)  return
+
+    const masterTimeLine = gsap.timeline()
+
+    // - INTRO SECTION - 
+    const introTimeLine = gsap.timeline()
+
+    if(titlePresentationRef.current) {
+      introTimeLine.fromTo(titlePresentationRef.current, {
+        opacity: 0,
+        y: -30
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power2.inOut'
+      })
+    }
+
+    if(descriptionPresentationRef.current) {
+      introTimeLine.fromTo(descriptionPresentationRef.current, {
+        text: ' ',
+        opacity: 0
+      }, {
+        text: { value: introDescriptionParagraph },
+        opacity: 1,
+        duration: 2,
+        ease: 'power1.inOut'
+      },
+        '+=0.3'
+      )
+    }
+
+    if(buttonContainerPresentationRef.current) {
+      introTimeLine.fromTo(buttonContainerPresentationRef.current, {
         opacity: 0,
         y: 20
       }, {
@@ -130,7 +395,113 @@ export default function Home() {
         '+=1'
       )
     }
+
+    // - DETAILS SECTION - 
+    const detailsTimeLine = gsap.timeline()
+
+    if(projectImageCard.current) {
+      detailsTimeLine.fromTo(projectImageCard.current, {
+        opacity: 0,
+        y: 40
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power2.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(shortParagraphFromImagesCarouselHighLightsRef.current) {
+      detailsTimeLine.fromTo(shortParagraphFromImagesCarouselHighLightsRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power2.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(shortSpanFromTitleProjectsCarouselRef.current) {
+      detailsTimeLine.fromTo(shortSpanFromTitleProjectsCarouselRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power1.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(projectsTitleCarouselRef.current) {
+      detailsTimeLine.fromTo(projectsTitleCarouselRef.current, 
+      {
+        opacity: 0,
+        y: 10,
+      },{
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power2.out',
+      },
+        '+=0.5'
+      ) 
+    }
+
+    // - SELF INFO SECTION - 
+    const selfInfoTimeLine = gsap.timeline()
+
+    if(profileSectionLinksFromCollabsRef.current) {
+      selfInfoTimeLine.fromTo(profileSectionLinksFromCollabsRef.current, {
+        opacity: 0,
+        x: 90
+      }, {
+        opacity: 1,
+        x: 0,
+        duration: 1.2,
+      ease: 'power1.inOut'
+      },
+        '+=0.7'
+      )
+    }
+
+    if(profileShortDescriptionRef.current) {
+      selfInfoTimeLine.fromTo(profileShortDescriptionRef.current, {
+        text: ' ',
+        opacity: 0
+      }, {
+        text: {
+          value: selfShortPresentationDescriptionParagraph
+        },
+        opacity: 1,
+        duration: 3.5,
+        ease: 'power1.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(socialsMediaConnectionsRef.current) {
+      selfInfoTimeLine.fromTo(socialsMediaConnectionsRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 1.5,
+        ease: 'power3.inOut'
+      },
+        '+=0.8'
+      )
+    }
+
+    masterTimeLine.add(introTimeLine).add(detailsTimeLine, '+=0.5').add(selfInfoTimeLine, '+=0.5')
+
   }, [mobileRangeFull, tabletRangeFull])
+ 
+ //MOBILE ANIMATIONS VIEW
   //ANIMATIONS SECOND SECTION VH
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -189,8 +560,8 @@ export default function Home() {
                 duration: 1.2,
                 ease: 'power2.out',
               },
-              '+=0.5'
-            )
+                '+=0.5'
+              ) 
             }
             observer.unobserve(entry.target)
 
@@ -210,63 +581,8 @@ export default function Home() {
     return () => {
       observer.disconnect()
     }
-  }, [])
-  // ANIMATIONS CAROUSEL IMAGES
-  useEffect(() => {
-    let imageInterval: NodeJS.Timeout
-
-    function StartImagesProjectTemplateCarousel() {
-      imageInterval = setInterval(() => {
-        setCurrentImagesOnCarouselIndex(prev => (prev + 1) % projects.length)
-      }, 7000)
-    }
-
-    StartImagesProjectTemplateCarousel()
-
-    return () => {
-      clearInterval(imageInterval)
-    }
-  }, [])
-  // ANIMATIONS CAROUSEL TITLES PROJECTS
-  useEffect(() => {
-    if(!projectTitleHasRevealed) return
-
-    function GenerateARandomIndex() {
-      const result: number = Math.floor(Math.random() * projects.length)
-      return result
-    }
-
-    function ChangeProjectsTitleRandomly() {
-      let nextIndex: number
-      do {
-        nextIndex = GenerateARandomIndex()
-      } while ( nextIndex === currentProjectTitleIdex)
-      setCurrentProjectTitleIndex(nextIndex)
-    }
-
-    function AnimatedProjectsTitleTransition() {
-     if(projectsTitleCarouselRef.current) {
-      gsap.fromTo(projectsTitleCarouselRef.current, {
-        text: ' ',
-      }, {
-        text: {
-          value: projects[currentProjectTitleIdex].title,
-          delimiter: '',
-        },
-        duration: 2.5,
-        ease: 'power1.inOut'
-      })
-     }
-    }
-    
-    AnimatedProjectsTitleTransition()
-
-    const interval = setInterval(() => {
-      ChangeProjectsTitleRandomly()
-    }, 3000)
-
-    return() => clearInterval(interval)
-  }, [currentProjectTitleIdex, projectTitleHasRevealed])
+  }, []) 
+ 
   //ANIMATIONS THIRD SECTION VH
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -319,55 +635,7 @@ export default function Home() {
       observer.disconnect()
     }
   }, [])
-  // ANIMATION LINKS SOCIAL MEDIA
-  useEffect(() => {
-    if(linkedinSocialsContainerRef.current) {
-      linkedinSocialsAnimationIconRef.current = lottie.loadAnimation({
-        container: linkedinSocialsContainerRef.current,
-        renderer: 'svg',
-        loop: true,
-        autoplay: false,
-        path: '/icons8-linkedin.json'
-      })
-    }
-
-    if(githubSocialsContainerRef.current) {
-      githubSocialsAnimationIconRef.current = lottie.loadAnimation({
-        container: githubSocialsContainerRef.current,
-        renderer: 'svg',
-        loop: true,
-        autoplay: false,
-        path: '/icons8-github.json'
-      })
-    }
-
-    if(discordSocialsContainerRef.current) {
-      discordSocialsAnimationIconRef.current = lottie.loadAnimation({
-        container: discordSocialsContainerRef.current,
-        renderer: 'svg',
-        loop: true,
-        autoplay: false,
-        path: '/icons8-discord.json'
-      })
-    }
-
-    if(mailSocialsContainerRef.current) {
-      mailsSocialsAnimationIconRef.current = lottie.loadAnimation({
-        container: mailSocialsContainerRef.current,
-        renderer: 'svg',
-        loop: true,
-        autoplay: false,
-        path: '/mail-icon.json'
-      })
-    }
-
-    return() => {
-      linkedinSocialsAnimationIconRef.current?.destroy()
-      githubSocialsAnimationIconRef.current?.destroy()
-      discordSocialsAnimationIconRef.current?.destroy()
-      mailsSocialsAnimationIconRef.current?.destroy()
-    }
-  }, [])
+   */}
 
     // DATA TEXTS CONST´S
     const introDescriptionParagraph: string = 'Down below, you’ll find quick drops of what I’ve been building — just a taste of the projects I’ve been cookin’ up lately.'
@@ -431,6 +699,7 @@ I believe in collaboration, innovation, and robust solutions—let’s build som
           className={`flex ${mobileRangeFull || tabletRangeFull ? 'flex-col py-6' : 'flex-row'}`}
         >
           <div 
+            ref={projectDetailsContainerSectionRef}
             className={`flex flex-1 space-y-12 ${mobileRangeFull || tabletRangeFull ? 'flex-col min-h-svh' : 'flex-row py-6'} relative`}
           >
             <div
@@ -499,7 +768,9 @@ I believe in collaboration, innovation, and robust solutions—let’s build som
             )}
           </div>
 
-          <div className={`${mobileRangeFull || tabletRangeFull ? 'w-full h-svh' : 'w-1/4 space-y-6'}`}>
+          <div 
+            ref={SelfInfoDetailsContainerSectionRef}
+            className={`${mobileRangeFull || tabletRangeFull ? 'w-full h-svh' : 'w-1/4 space-y-6'}`}>
             <div
               ref={shortSelfPresentationRef}
               className={`${mobileRangeFull || tabletRangeFull ? 'min-h-full py-5' : ''} space-y-3`}
@@ -600,13 +871,17 @@ I believe in collaboration, innovation, and robust solutions—let’s build som
                       className={`${mobileRangeFull || tabletRangeFull ? 'w-20 h-20 -m-[16px]' : 'w-16 h-16 -m-[12px]'} 
                         flex overflow-hidden scale-[1.4]  pointer-events-auto`}
                     />
-                    <Link
-                      href='https://discord.com/users/1105146206348398642'
-                      target='_blank'
+                    <button
+                      onClick={HandleToggleEmailModalBoxContact}
                       className='px-3 text-lg rounded-sm border border-transparent hover:bg-gray-500/30 hover:border hover:border-gray-100/30 transition-all duration-300 ease-in-out z-10'
                     >
                       Email
-                    </Link>
+                    </button>
+                    {toggleEmailModalBoxContact && (
+                      <EmailBoxModal
+                        HandleToggleEmailModalBoxContact={HandleToggleEmailModalBoxContact}
+                      />
+                    )}
                 </div>
               </div>
             </div>
