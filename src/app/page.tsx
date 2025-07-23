@@ -34,8 +34,8 @@ export default function Home() {
   const shortSelfPresentationRef = useRef<HTMLDivElement>(null)
 
   //SHORT PORTFOLIO PRESENTATION
-  const titlePresentationRef = useRef(null)
-  const descriptionPresentationRef = useRef(null)
+  const titlePresentationRef = useRef<HTMLTitleElement>(null)
+  const descriptionPresentationRef = useRef<HTMLParagraphElement>(null)
   const buttonContainerPresentationRef = useRef<HTMLDivElement>(null)
 
   // SECOND SECTION
@@ -49,7 +49,6 @@ export default function Home() {
   const shortParagraphFromImagesCarouselHighLightsRef = useRef<HTMLParagraphElement>(null)
   const shortSpanFromTitleProjectsCarouselRef = useRef<HTMLSpanElement>(null)
   // PROJECTS TITLE
-  const [ projectTitleHasRevealed, setProjectTitleHasRevealed ] = useState(false)
   const projectsTitleCarouselRef = useRef<HTMLAnchorElement>(null)
   const [ currentProjectTitleIdex, setCurrentProjectTitleIndex ] = useState(0)
 
@@ -257,8 +256,6 @@ export default function Home() {
 
   // ANIMATIONS CAROUSEL TITLES PROJECTS
    useEffect(() => {
-    // if(!projectTitleHasRevealed) return
-
     function GenerateARandomIndex() {
       const result: number = Math.floor(Math.random() * projects.length)
       return result
@@ -294,7 +291,7 @@ export default function Home() {
     }, 3000)
 
     return() => clearInterval(interval)
-  }, [currentProjectTitleIdex, projectTitleHasRevealed])
+  }, [currentProjectTitleIdex])
 
   // ANIMATION LINKS SOCIAL MEDIA
   useEffect(() => {

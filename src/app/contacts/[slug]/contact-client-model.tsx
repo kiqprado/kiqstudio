@@ -1,6 +1,6 @@
 'use client'
 
-import { IContacts } from '@/app/portfolio-data/data'
+import { IContactsData } from '@/app/portfolio-data/data'
 
 import { useMediaRange } from '@/app/utils/breakpoints-hook'
 
@@ -12,9 +12,9 @@ import { PageNotFound } from '@/app/error/page-not-found'
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 
 interface IContactClientModel {
-  prevContact: IContacts
-  contact?: IContacts
-  nextContact: IContacts
+  prevContact: IContactsData
+  contact?: IContactsData
+  nextContact: IContactsData
 }
 
 export function ContactClientModel({ prevContact, contact, nextContact}: IContactClientModel) {
@@ -65,8 +65,6 @@ export function ContactClientModel({ prevContact, contact, nextContact}: IContac
           Home
         </ButtonLink>
       </div>
-      
-
     </div>
   )
 }

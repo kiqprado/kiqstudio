@@ -10,7 +10,7 @@ import { TextPlugin } from 'gsap/TextPlugin'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Iprojects } from '@/app/portfolio-data/data'
+import { IprojectsData } from '@/app/portfolio-data/data'
 
 import { ButtonLink } from '@/app/elements/button-link'
 import { NavBarSectionTitle } from '@/app/elements/project-title-navbar'
@@ -21,9 +21,9 @@ import { PageNotFound } from '@/app/error/page-not-found'
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 
 interface IProjectClientModel {
-  prevProject: Iprojects
-  project?: Iprojects
-  nextProject: Iprojects
+  prevProject: IprojectsData
+  project?: IprojectsData
+  nextProject: IprojectsData
 }
 
 export function ProjectClientModel({ prevProject, project, nextProject}: IProjectClientModel) {

@@ -43,13 +43,13 @@ export function MainMenuModal({ HandleOpeningMenu }: IMainMenuModal) {
   }, [ toggleProjectsSubMenuModal])
 
   return(
-    <div className={`absolute z-1 w-full h-screen inset-0 bg-zinc-950/50`}>
+    <div className={`absolute z-1 w-full h-screen inset-0 bg-zinc-950/70`}>
       <div className={`relative flex ${mobileRangeFull || tabletRangeFull ? 'bg-zinc-950' : 'bg-transparent'} `}>
         <button
           onClick={HandleOpeningMenu}
-          className='absolute top-2.5 right-2.5 bg-zinc-950'
+          className='absolute top-2.5 right-2.5 cursor-pointer hover:scale-110 transform transition-all duration-300 ease-in-out bg-zinc-950'
         >
-          <X className='hover:scale-110 hover:text-red-500 transition-all duration-300 ease-in-out'/>
+          <X className='hover:text-red-500 '/>
         </button>
         <div className={`${mobileRangeFull || tabletRangeFull ? 'm-auto space-y-3 pt-7 pb-3' : 'flex justify-center gap-15 mt-3.5'} w-full text-center`}>
           <div 

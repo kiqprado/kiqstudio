@@ -1,4 +1,4 @@
-export interface Iprojects {
+export interface IprojectsData {
   id: number
   slug: string
   title: string
@@ -7,7 +7,7 @@ export interface Iprojects {
   images_captions: string[]
 }
 
-export interface IContacts {
+export interface IContactsData {
   id: number
   slug: string
   title: string
@@ -17,7 +17,7 @@ export interface IContacts {
   url: string[]
 }
 
-const projects: Iprojects[] = [
+const projects: IprojectsData[] = [
   {
     id: 0,
     slug: 'planner',
@@ -84,7 +84,7 @@ const projects: Iprojects[] = [
   }
 ]
 
-const contacts: IContacts[] = [
+const contacts: IContactsData[] = [
   {
     id: 0,
     slug: 'funny',
