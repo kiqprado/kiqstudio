@@ -8,7 +8,7 @@ interface IEmailBoxModal {
   HandleToggleEmailModalBoxContact: () => void
 }
 
-export function EmailBoxModal({ HandleToggleEmailModalBoxContact }: IEmailBoxModal ) {
+export function EmailBoxModal({ HandleToggleEmailModalBoxContact }: IEmailBoxModal) {
 
   //Query's
     const isMobileSM = useMediaRange('mobileSM')
@@ -19,7 +19,7 @@ export function EmailBoxModal({ HandleToggleEmailModalBoxContact }: IEmailBoxMod
     
     const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
     const tabletRangeFull = isTabletMD || isTabletLG
-    const desktopRangeFull = !mobileRangeFull && !tabletRangeFull
+    // const desktopRangeFull = !mobileRangeFull && !tabletRangeFull
 
   return (
     <div
@@ -34,7 +34,7 @@ export function EmailBoxModal({ HandleToggleEmailModalBoxContact }: IEmailBoxMod
             onClick={HandleToggleEmailModalBoxContact}
             align='end'
           >
-            <X className={`${mobileRangeFull || tabletRangeFull ? 'size-7' : 'size-5'}`}/>
+            <X className={`${mobileRangeFull || tabletRangeFull ? 'size-7' : 'size-6'}`}/>
           </ButtonIcon>
         </div>
 
@@ -66,12 +66,11 @@ export function EmailBoxModal({ HandleToggleEmailModalBoxContact }: IEmailBoxMod
             className='border border-zinc-700 rounded-lg py-1 px-4
               cursor-pointer transition-all duration-200 ease-in-out
               shadow-[0_4px_0_rgba(0,0,0,0.3)] active:translate-y-[2px] active:shadow-[0_1px_0_rgba(0,0,0,0.2)] 
-            bg-zinc-800 text-white'
+            bg-zinc-900 text-white tracking-wider hover:bg-zinc-800'
           >
             Send
           </button>
-        </form>
-        
+        </form>  
       </div>
     </div>
   )

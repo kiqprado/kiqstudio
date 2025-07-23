@@ -2,7 +2,11 @@ import { ReactNode, ComponentProps } from 'react'
 import { tv, type VariantProps } from 'tailwind-variants'
 
 const ButtonIconVariants = tv({
-  base: 'flex outline-none cursor-pointer',
+  base: [
+    'flex outline-none cursor-pointer',
+    'transform transition duration-300 ease-in-out',
+    'hover:scale-110 hover:brightness-200'
+  ],
   variants: {
     align: {
       start: 'self-start',

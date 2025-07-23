@@ -51,6 +51,7 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
   
   const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
   const tabletRangeFull = isTabletMD || isTabletLG
+  const desktopRangeFull = !mobileRangeFull && !tabletRangeFull
 
   gsap.registerPlugin(TextPlugin, ScrollTrigger)
 
@@ -293,21 +294,24 @@ export function ProjectClientModel({ prevProject, project, nextProject}: IProjec
           {project.images.map((image, index) => (
             <div
               key={index}
-              className='flex flex-col items-center gap-3'
+              className='flex flex-col items-center gap-5'
             >
-              <Image
+              <div
+                className='relative w-full sm:w-4/5 h-auto aspect-[16/9]'
+              >
+                <Image
                 src={image}
                 alt={`Image of ${project.title}`}
                 ref={(el) => {if(el) imageTemplateOfProjectRef.current[index] = el}}
-                width={356}
-                height={52}
+                fill
                 className='rounded-md'
-              />
+                />
+              </div>
               <div
                 ref={(el) => {if(el) imageTemplateCaptionProjectRef.current[index] = el}}
-                className='mb-3'
+                className='mb-9 w-full flex justify-center'
               >
-                <p className='px-4 text-justify tracking-wider'>
+                <p className={` ${desktopRangeFull ? 'max-w-[80%]' : ''} text-justify tracking-wider`}>
                   {project.images_captions[index]}
                 </p>
               </div>

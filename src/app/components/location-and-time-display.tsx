@@ -83,25 +83,18 @@ export function LocationAndTimeDisplay() {
       {error ? (
         <p className='font-bold text-sm'>{error}</p>
       ) : (
-        <div className='flex gap-3'>
-          <div className='min-w-1/2 flex items-center'>
-            <div 
-              className='h-1 w-full bg-neutral-500 rounded-xl hover:bg-neutral-300 transition-colors duration-300. ease-in-out'
-            />
+        <div className='flex items-center gap-3'>
+          <span>Current Location 📍</span>
+          <div className='flex items-baseline gap-1.5'>
+            <span className='text-xs tracking-widest'>&#47;&#47; <strong>Local Time:</strong> </span>
+            <span className='text-sm tracking-wider'>{time}</span>
           </div>
-          <div className='flex items-center gap-3'>
-            <span>Current Location 📍</span>
-            <div className='flex items-baseline gap-1.5'>
-              <span className='text-xs tracking-widest'>&#47;&#47; <strong>Local Time:</strong> </span>
-              <span className='text-sm tracking-wider'>{time}</span>
-            </div>
           {latitude && longitude && (
             <div className='flex items-baseline gap-1.5'>
               <span className='text-xs tracking-widest'>&#47;&#47; <strong>Coordinates:</strong> </span>
               <span className='text-sm tracking-wider'>{latitude.toFixed(4)}, {longitude.toFixed(4)}</span>
             </div>
           )}
-          </div>
         </div>
       )}
     </div>
