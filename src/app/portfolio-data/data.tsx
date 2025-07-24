@@ -1,4 +1,4 @@
-export interface IprojectsData {
+export interface IProjectsData {
   id: number
   slug: string
   title: string
@@ -17,7 +17,7 @@ export interface IContactsData {
   url: string[]
 }
 
-const projects: IprojectsData[] = [
+const projects: IProjectsData[] = [
   {
     id: 0,
     slug: 'planner',
@@ -96,7 +96,7 @@ const contacts: IContactsData[] = [
       'Instagram'
     ],
     url: [
-      '404',
+      'https://discord.com/users/1105146206348398642',
       'https://www.instagram.com/kiqprado/'
     ]
   },

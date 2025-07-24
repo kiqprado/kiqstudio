@@ -9,7 +9,6 @@ import { Logo } from '../elements/logo'
 
 import { Menu } from 'lucide-react'
 
-
 export function Header() {
   const [ menuOpening, seTMenuOpening ] = useState(false)
 

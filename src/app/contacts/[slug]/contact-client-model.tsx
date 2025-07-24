@@ -9,6 +9,8 @@ import { NavBarSectionTitle } from '@/app/elements/project-title-navbar'
 
 import { PageNotFound } from '@/app/error/page-not-found'
 
+import Link from 'next/link'
+
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 
 interface IContactClientModel {
@@ -28,6 +30,7 @@ export function ContactClientModel({ prevContact, contact, nextContact}: IContac
   
   const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
   const tabletRangeFull = isTabletMD || isTabletLG
+  const desktopRangeFull = !mobileRangeFull && !tabletRangeFull
 
   if(!contact) {
     return (
@@ -57,13 +60,36 @@ export function ContactClientModel({ prevContact, contact, nextContact}: IContac
       </div>
 
       <div
-        className='m-auto'
+        className={`m-auto flex flex-col items-center ${desktopRangeFull ? 'max-w-[80%]' : ''}`}
       >
-        <ButtonLink
-          href={'/'}
-        >
-          Home
-        </ButtonLink>
+        <div className={`flex flex-col items-center gap-7`}>
+          <h3
+            className='text-3xl'
+          >
+            {contact.subtitle}
+          </h3>
+          <p className={`${desktopRangeFull ? 'px-[10%]' : 'px-6'} text-justify tracking-wider`}>{contact.description}</p>
+        </div>
+        <div className='absolute bottom-22'>
+          {contact.url.map((url, index) => (
+            <Link
+              key={index}
+              href={url}
+              target='_blank'
+              className='inline-block mx-6'
+            >
+              {contact.role[index]}
+            </Link>
+          ))}
+        </div>
+        
+          <Link 
+            href={'/'}
+            className='absolute bottom-8 text-xl tracking-wider hover:text-sky-500 hover:brightness-200 transition-colors duration-300 ease-in-out'
+          >
+            /Home
+          </Link>
+        
       </div>
     </div>
   )
