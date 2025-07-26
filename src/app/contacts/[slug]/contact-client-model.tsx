@@ -1,5 +1,9 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
+
+import gsap from 'gsap'
+
 import { IContactsData } from '@/app/portfolio-data/data'
 
 import { useMediaRange } from '@/app/utils/breakpoints-hook'
@@ -12,6 +16,7 @@ import { PageNotFound } from '@/app/error/page-not-found'
 import Link from 'next/link'
 
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
+import { EmailBoxModal } from '@/app/components/email-box-modal'
 
 interface IContactClientModel {
   prevContact: IContactsData
@@ -20,6 +25,11 @@ interface IContactClientModel {
 }
 
 export function ContactClientModel({ prevContact, contact, nextContact}: IContactClientModel) {
+  const contactTitleRef = useRef<HTMLHeadingElement>(null)
+  const descriptionContactRef = useRef<HTMLParagraphElement>(null)
+  const linksContactRef = useRef<HTMLDivElement>(null)
+
+  const [ contactEmailBoxModal, setContactEmailBoxModal ] = useState(false)
 
     //Query's
   const isMobileSM = useMediaRange('mobileSM')
@@ -31,6 +41,52 @@ export function ContactClientModel({ prevContact, contact, nextContact}: IContac
   const mobileRangeFull = isMobileSM || isMobileMD || isMobileLG
   const tabletRangeFull = isTabletMD || isTabletLG
   const desktopRangeFull = !mobileRangeFull && !tabletRangeFull
+
+  function HandleContactEmailBoxModal() {
+    setContactEmailBoxModal(prev => !prev)
+  }
+
+  useEffect(() => {
+    const timeLine = gsap.timeline()
+
+    if(contactTitleRef.current) {
+      timeLine.fromTo(contactTitleRef.current, {
+        opacity: 0,
+        y: -50
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: 'power2.inOut'
+      })
+    }
+
+    if(descriptionContactRef.current) {
+      timeLine.fromTo(descriptionContactRef.current, {
+        opacity: 0,
+        text: ' '
+      }, {
+        opacity: 1,
+        text: { value: contact.description},
+        duration: 3.5,
+        ease: 'power2.inOut'
+      },
+        '+=0.5'
+      )
+    }
+
+    if(linksContactRef.current) {
+      timeLine.fromTo(linksContactRef.current, {
+        opacity: 0
+      }, {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power3.inOut'
+      },
+        '+=0.2'
+      )
+    }
+  }, [])
 
   if(!contact) {
     return (
@@ -64,31 +120,56 @@ export function ContactClientModel({ prevContact, contact, nextContact}: IContac
       >
         <div className={`flex flex-col items-center gap-7`}>
           <h3
+            ref={contactTitleRef}
             className='text-3xl'
           >
-            {contact.subtitle}
+            {contact?.subtitle}
           </h3>
-          <p className={`${desktopRangeFull ? 'px-[10%]' : 'px-6'} text-justify tracking-wider`}>{contact.description}</p>
-        </div>
-        <div className='absolute bottom-22'>
-          {contact.url.map((url, index) => (
-            <Link
-              key={index}
-              href={url}
-              target='_blank'
-              className='inline-block mx-6'
-            >
-              {contact.role[index]}
-            </Link>
-          ))}
-        </div>
-        
-          <Link 
-            href={'/'}
-            className='absolute bottom-8 text-xl tracking-wider hover:text-sky-500 hover:brightness-200 transition-colors duration-300 ease-in-out'
+          <p 
+            ref={descriptionContactRef}
+            className={`${desktopRangeFull ? 'px-[10%] min-h-36' : 'px-6 min-h-22'} text-justify tracking-wider`}
           >
-            /Home
-          </Link>
+            {contact.description}
+          </p>
+        </div>
+        <div 
+          ref={linksContactRef}
+          className={`absolute bottom-36`}
+        >
+          {contact.url.map((url, index) =>
+            contact.role[index] === 'Email' ? (
+              <button
+                key={index}
+                onClick={HandleContactEmailBoxModal}
+                className='mx-6 cursor-pointer'
+              >
+                {contact.role[index]}
+              </button>
+            ) : (
+              <Link
+                key={index}
+                href={url}
+                target='_blank'
+                className='inline-block mx-6'
+              >
+                {contact.role[index]}
+              </Link>
+            )
+          )}
+        </div>
+        {contactEmailBoxModal && (
+          <EmailBoxModal
+            HandleToggleEmailModalBoxContact={HandleContactEmailBoxModal}
+          />
+        )}
+        
+        <Link 
+          href={'/'}
+          className='absolute bottom-8 text-xl tracking-wider 
+            hover:text-sky-500 hover:brightness-200 transition-colors duration-300 ease-in-out'
+        >
+          /Home
+        </Link>
         
       </div>
     </div>

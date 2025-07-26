@@ -111,7 +111,7 @@ const contacts: IContactsData[] = [
       'LinkedIn'
     ],
     url: [
-      'Send me a message',
+      ' ',
       'https://www.linkedin.com/in/kaiqueprado/'
     ]
   },
@@ -126,8 +126,8 @@ const contacts: IContactsData[] = [
       'Discord'
     ],
     url: [
-      'Send me a message',
-      '404'
+      ' ',
+      'https://discord.com/users/1105146206348398642'
     ]
   }
 ]

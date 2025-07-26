@@ -28,9 +28,9 @@ interface IProjectClientModel {
 
 export function ProjectClientModel({ prevProject, project, nextProject}: IProjectClientModel) {
   const projectNavigationRef = useRef(null)
-  const projectProgressNavBarRef = useRef(null)
+  const projectProgressNavBarRef = useRef<HTMLDivElement | null>(null)
 
-  const projectTitleTextRef = useRef(null)
+  const projectTitleTextRef = useRef<HTMLHeadingElement>(null)
   const projectDescriptionTextRef = useRef(null)
 
   const imageTemplateOfProjectRef = useRef<HTMLImageElement[]>([])
